@@ -220,19 +220,82 @@ tr:hover td:first-child{color:#fff;}
 .q-d{transition:transform .4s cubic-bezier(.22,1,.36,1),background .3s ease;}
 .q:hover .q-d{transform:scale(1.5);background:#fff;}
 
+/* ─── HAMBURGER ─── */
+.nav-toggle{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:10px 6px;background:none;border:none;-webkit-tap-highlight-color:transparent;}
+.nav-toggle span{display:block;width:22px;height:2px;background:#fff;border-radius:1px;transition:transform .3s cubic-bezier(.22,1,.36,1),opacity .3s ease;}
+.nav-toggle.active span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.nav-toggle.active span:nth-child(2){opacity:0;}
+.nav-toggle.active span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
 /* ─── SMOOTH SCROLL ─── */
-html{scroll-behavior:smooth;}
+html{scroll-behavior:smooth;scroll-padding-top:70px;}
 
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}
   .reveal,.reveal-scale{opacity:1;transform:none;}
 }
+
+/* ─── MOBILE < 768px ─── */
 @media(max-width:768px){
+  .nav-toggle{display:flex;}
+  .nav-links{position:fixed;top:52px;left:0;right:0;flex-direction:column;gap:0;background:rgba(13,13,13,.98);backdrop-filter:blur(16px);border-bottom:1px solid #1e1e1e;padding:8px 0;max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.22,1,.36,1),padding .4s ease;}
+  .nav-links.open{max-height:400px;padding:8px 0;}
+  .nav-links li{width:100%;}
+  .nav-links a{display:flex;align-items:center;padding:14px 28px;font-size:13px;min-height:44px;color:rgba(255,255,255,.55);}
+  .nav-links a::after{display:none;}
+  .nav-links a:hover{color:#fff!important;background:rgba(255,255,255,.03);}
+
   .infog,.cloe-grid,.gaps,.qs{grid-template-columns:1fr;}
   .scenes{grid-template-columns:1fr;}
   .mr{grid-template-columns:1fr;}
-  section{padding:40px 16px;}
-  .hero-c{padding:60px 16px 30px;}
+
+  section{padding:32px 16px;}
+  .hero-c{padding:60px 16px 28px;}
+  #hero{min-height:50vh;}
+
+  .section-h{font-size:clamp(22px,6vw,36px);}
+  .hero-h{font-size:clamp(28px,8vw,48px);}
+  .hero-p{font-size:clamp(12px,3.5vw,14px);}
+
+  .cloe-insight{padding:20px 16px;}
+  .cloe-head{flex-direction:column;align-items:flex-start;gap:10px;}
+  .cloe-stats{flex-wrap:wrap;gap:10px;}
+
+  .grid2{grid-template-columns:1fr;}
+  .dolor-grid{grid-template-columns:1fr;}
+  .dolor-header{padding:12px 14px;}
+
+  .agenda-item{grid-template-columns:1fr;gap:4px;}
+  .agenda-time{font-size:clamp(8px,2.5vw,10px);}
+
+  .scene-tag{font-size:clamp(7px,2.5vw,9px);}
+
+  footer{flex-direction:column;align-items:flex-start;gap:6px;padding:16px;}
+}
+
+/* ─── SMALL PHONE < 480px ─── */
+@media(max-width:480px){
+  section{padding:24px 12px;}
+  .hero-c{padding:50px 12px 24px;}
+  .hero-wm{font-size:clamp(80px,20vw,140px);right:-4px;}
+  .infoc{padding:16px 14px;}
+  .infoc h3{font-size:clamp(12px,4vw,14px);}
+  .infoc p{font-size:clamp(10px,3vw,12px);}
+  .cloe-insight{padding:16px 12px;}
+  .cloe-item{padding:12px 14px;}
+  .cloe-item .val{font-size:clamp(10px,3vw,12px);}
+  .scene{padding:20px 16px;}
+  .scene-d{font-size:clamp(10px,3vw,12px);}
+  .section-sub::before{width:12px;}
+  .nav-links a{padding:12px 16px;font-size:12px;}
+  .dolor-row > div{padding:12px 14px;font-size:clamp(10px,3vw,12px);}
+  .q{padding:14px 12px;}
+  .q-t{font-size:clamp(10px,3vw,12px);}
+  .agenda-item{padding:12px 0;}
+  .agenda-d{font-size:clamp(10px,3vw,12px);}
+  .agenda-t{font-size:clamp(11px,3.5vw,13px);}
+  .row > div{padding:10px 12px;font-size:clamp(10px,3vw,12px);}
+  .ch{padding:12px 14px;font-size:clamp(9px,2.8vw,11px);}
 }
 </style>
 </head>
@@ -240,7 +303,10 @@ html{scroll-behavior:smooth;}
 
 <nav>
   <div class="nav-logo"><span class="acc">[</span>GP<span class="acc">]</span> Preminuta</div>
-  <ul class="nav-links">
+  <button class="nav-toggle" aria-label="Menú" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="navMenu">
     <li><a href="#preparacion">Preparación</a></li>
     <li><a href="#cloe">Cloe</a></li>
     <li><a href="#soluciones">Estrategia</a></li>
@@ -509,6 +575,24 @@ html{scroll-behavior:smooth;}
 </footer>
 
 <script>
+/* Hamburger Menu */
+const toggle=document.querySelector('.nav-toggle');
+const menu=document.querySelector('.nav-links');
+if(toggle&&menu){
+  toggle.addEventListener('click',()=>{
+    const open=menu.classList.toggle('open');
+    toggle.classList.toggle('active');
+    toggle.setAttribute('aria-expanded',open);
+  });
+  menu.querySelectorAll('a').forEach(a=>{
+    a.addEventListener('click',()=>{
+      menu.classList.remove('open');
+      toggle.classList.remove('active');
+      toggle.setAttribute('aria-expanded','false');
+    });
+  });
+}
+
 /* Scroll Reveal */
 const io=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('on');io.unobserve(x.target);}});},{threshold:0.06});
 document.querySelectorAll('.reveal,.reveal-scale').forEach(el=>io.observe(el));
