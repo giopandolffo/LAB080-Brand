@@ -430,25 +430,6 @@ footer{background:#0a0a0a;border-top:1px solid var(--border)}
 .reveal{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
 .reveal.on{opacity:1;transform:none}
 .d1{transition-delay:.1s}.d2{transition-delay:.18s}.d3{transition-delay:.26s}.d4{transition-delay:.34s}
-
-/* ── SECTION VIDEO BACKGROUNDS ── */
-.section-bg-video{
-  position:absolute;inset:0;overflow:hidden;z-index:0;
-}
-.section-bg-video video{
-  width:100%;height:100%;object-fit:cover;
-  aspect-ratio:16/9;
-  filter:brightness(.3) saturate(.5);
-}
-.section-bg-content{
-  position:relative;z-index:1;
-}
-#problem > :not(.section-bg-video),
-#offline > :not(.section-bg-video),
-#services > :not(.section-bg-video),
-#faq > :not(.section-bg-video){
-  position:relative;z-index:1;
-}
 </style>
 </head>
 <body>
@@ -792,7 +773,6 @@ footer{background:#0a0a0a;border-top:1px solid var(--border)}
 
 <!-- PROBLEM -->
 <section id="problem" style="position:relative">
-  <div class="section-bg-video"><video src="assets/videos/hf_20260117_214118_cafbd2cf-7111-404b-8fa9-ab9dfae17744.mp4" autoplay muted loop playsinline></video></div>
   <p class="problem-headline reveal" data-scramble>
     Producir bien siempre ha sido caro,<br>
     lento y reservado para pocos.
@@ -829,7 +809,6 @@ footer{background:#0a0a0a;border-top:1px solid var(--border)}
 
 <!-- WORK OFFLINE -->
 <section id="offline" style="position:relative">
-  <div class="section-bg-video"><video src="assets/videos/hf_20260128_185004_0f1d40ae-cfbb-474e-b42d-24c60fc22171.mp4" autoplay muted loop playsinline></video></div>
   <div class="offline-inner">
     <div class="machine-diagram reveal">
       <div class="diagram-title">// Cómo entregamos</div>
@@ -888,7 +867,6 @@ footer{background:#0a0a0a;border-top:1px solid var(--border)}
 
 <!-- SERVICES -->
 <section id="services" style="position:relative">
-  <div class="section-bg-video"><video src="assets/videos/hf_20260129_053009_1e612e18-b914-47d8-81da-35550747c686.mp4" autoplay muted loop playsinline></video></div>
   <div class="services-inner">
     <div class="services-eyebrow">Studio · Systems</div>
     <h2 class="services-headline reveal" data-scramble>Studio & Systems.<br>Un solo laboratorio.</h2>
@@ -1011,7 +989,6 @@ footer{background:#0a0a0a;border-top:1px solid var(--border)}
 
 <!-- FAQ -->
 <section id="faq" style="position:relative">
-  <div class="section-bg-video"><video src="assets/videos/hf_20260129_130125_a55fb98f-717f-4003-a5e3-28331fde2284.mp4" autoplay muted loop playsinline></video></div>
   <div class="faq-inner">
     <div class="faq-eyebrow">FAQ</div>
     <h2 class="faq-headline reveal" data-scramble>Preguntas<br>frecuentes.</h2>
