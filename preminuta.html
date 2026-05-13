@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Preminuta · Reunión 14 Mayo</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:#0d0d0d;color:#fff;
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  font-weight:300;overflow-x:hidden;
+}
+.mono{font-family:'SFMono-Regular',Consolas,'Liberation Mono',Menlo,Courier,monospace;}
+.acc{color:#ff4f01;}
+.s-accent{color:#1a7a3a;}
+
+/* ─── NAV ─── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:14px 28px;background:rgba(13,13,13,.95);backdrop-filter:blur(16px);border-bottom:1px solid #1e1e1e;
+}
+.nav-logo{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:-.3px;}
+.nav-links{display:flex;gap:20px;list-style:none;}
+.nav-links a{font-size:11px;font-weight:500;color:rgba(255,255,255,.55);transition:color .2s;text-decoration:none;}
+.nav-links a:hover{color:#fff;}
+
+/* ─── HERO ─── */
+#hero{
+  min-height:60vh;background:#ff4f01;position:relative;overflow:hidden;
+  display:flex;flex-direction:column;justify-content:flex-end;padding-top:80px;
+}
+.hero-wm{
+  position:absolute;right:-8px;top:50%;transform:translateY(-50%);
+  font-size:clamp(100px,16vw,240px);font-weight:800;
+  color:rgba(0,0,0,.06);line-height:1;letter-spacing:-4px;pointer-events:none;
+  font-family:'SFMono-Regular',Consolas,monospace;
+}
+.hero-c{padding:80px 28px 40px;position:relative;z-index:2;}
+.hero-e{
+  font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(0,0,0,.45);margin-bottom:12px;display:flex;align-items:center;gap:8px;
+}
+.hero-e::before{content:'';width:16px;height:1px;background:rgba(0,0,0,.35);}
+.hero-h{
+  font-weight:800;font-size:clamp(32px,5vw,72px);line-height:.94;
+  letter-spacing:-1.5px;color:#000;max-width:700px;margin-bottom:10px;
+}
+.hero-h em{font-style:italic;color:rgba(0,0,0,.3);font-size:.88em;font-weight:400;}
+.hero-p{
+  font-size:14px;font-weight:400;color:rgba(0,0,0,.55);max-width:500px;line-height:1.6;
+}
+
+/* ─── SECTIONS ─── */
+section{padding:60px 28px;border-top:1px solid #1e1e1e;}
+.in{max-width:1000px;margin:0 auto;}
+
+.section-sub{font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#ff4f01;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.section-sub::before{content:'';width:16px;height:1px;background:#ff4f01;}
+.section-h{font-weight:800;font-size:clamp(24px,3.5vw,48px);line-height:.96;letter-spacing:-1px;color:#fff;}
+
+/* ─── INFO GRID ─── */
+.infog{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#1e1e1e;margin-top:28px;}
+.infoc{background:#0d0d0d;padding:20px 20px;}
+.infoc h3{font-weight:600;font-size:13px;color:#fff;margin-bottom:4px;}
+.infoc p{font-size:11px;color:rgba(255,255,255,.5);line-height:1.6;}
+
+/* ─── METRICS ROW ─── */
+.mr{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#1e1e1e;margin:20px 0;}
+.mc{background:#0d0d0d;padding:24px 16px;text-align:center;}
+.mc .n{font-family:'SFMono-Regular',Consolas,monospace;font-weight:800;font-size:clamp(20px,2.5vw,36px);color:#ff4f01;line-height:1;}
+.mc .l{font-size:10px;color:#666;margin-top:4px;}
+
+/* ─── CLOE ANALYSIS ─── */
+.cloe-insight{
+  background:#161616;border:1px solid #1e1e1e;
+  padding:28px 24px;margin-top:20px;position:relative;overflow:hidden;
+}
+.cloe-insight::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#ff4f01,transparent);}
+.cloe-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px;}
+.cloe-name{font-weight:700;font-size:18px;}
+.cloe-stats{display:flex;gap:16px;}
+.cloe-stat{font-family:'SFMono-Regular',Consolas,monospace;font-size:9px;letter-spacing:1px;color:#666;}
+.cloe-stat strong{color:#fff;font-size:11px;}
+
+.cloe-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#1e1e1e;margin-top:16px;}
+.cloe-item{background:#0d0d0d;padding:16px 16px;}
+.cloe-item .tag{font-size:8px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#ff4f01;margin-bottom:4px;}
+.cloe-item .val{font-size:11px;color:rgba(255,255,255,.55);line-height:1.5;}
+
+/* ─── TABLE ─── */
+table{width:100%;border-collapse:collapse;margin-top:16px;}
+th,td{padding:12px 14px;text-align:left;border-bottom:1px solid #1e1e1e;font-size:12px;}
+th{font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#666;background:#111;}
+td{color:rgba(255,255,255,.55);font-weight:300;}
+td:first-child{font-weight:500;color:rgba(255,255,255,.75);}
+
+/* ─── GAPS ─── */
+.gaps{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#1e1e1e;margin-top:16px;}
+
+/* ─── COMPARE GRID ─── */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#1e1e1e;margin-top:16px;}
+.ch{background:#111;padding:14px 20px;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;border-bottom:2px solid currentColor;}
+.row{display:contents;}
+.row > div{background:#0d0d0d;padding:12px 16px;font-size:11px;font-weight:300;color:rgba(255,255,255,.65);border-bottom:1px solid #1e1e1e;display:flex;align-items:center;}
+.row .f{background:#111;font-size:8px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#666;}
+.row:last-child > div{border-bottom:none;}
+@media(max-width:768px){.grid2{grid-template-columns:1fr;}}
+.gap{background:#0d0d0d;padding:16px 16px;}
+.gap-dot{width:4px;height:4px;border-radius:50%;background:#ff4f01;margin-bottom:8px;}
+.gap-t{font-weight:600;font-size:13px;color:#fff;margin-bottom:2px;}
+.gap-d{font-size:11px;color:rgba(255,255,255,.5);line-height:1.5;}
+
+/* ─── 3 SCENARIOS ─── */
+.scenes{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#1e1e1e;margin-top:20px;}
+.scene{background:#0d0d0d;padding:24px 20px;position:relative;}
+.scene-num{font-family:'SFMono-Regular',Consolas,monospace;font-weight:800;font-size:11px;color:#ff4f01;margin-bottom:8px;}
+.scene-t{font-weight:600;font-size:14px;color:#fff;margin-bottom:4px;}
+.scene-d{font-size:11px;color:rgba(255,255,255,.5);line-height:1.5;margin-bottom:8px;}
+.scene-tag{font-size:8px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:3px 8px;border:1px solid #1e1e1e;display:inline-block;}
+
+/* ─── AGENDA ─── */
+.agenda{margin-top:20px;}
+.agenda-item{padding:14px 0;border-bottom:1px solid #1e1e1e;display:grid;grid-template-columns:60px 1fr;gap:12px;}
+.agenda-item:first-child{border-top:1px solid #1e1e1e;}
+.agenda-time{font-family:'SFMono-Regular',Consolas,monospace;font-size:9px;color:#666;line-height:1.6;}
+.agenda-t{font-size:12px;font-weight:500;color:#fff;}
+.agenda-d{font-size:11px;color:rgba(255,255,255,.5);line-height:1.5;}
+
+/* ─── QUESTIONS ─── */
+.qs{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#1e1e1e;margin-top:16px;}
+.q{background:#0d0d0d;padding:16px 16px;}
+.q-d{width:4px;height:4px;border-radius:50%;background:#ff4f01;margin-bottom:6px;}
+.q-t{font-size:11px;color:rgba(255,255,255,.55);line-height:1.5;}
+.q-t strong{color:#fff;font-weight:500;}
+
+/* ─── FOOTER ─── */
+footer{
+  background:#0d0d0d;border-top:1px solid #1e1e1e;
+  padding:20px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;
+}
+.f-logo{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:-.2px;}
+.f-copy{font-size:9px;color:#555;}
+
+/* ─── DOLOR GRID (3 columnas) ─── */
+.dolor-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:#1e1e1e;margin-top:16px;}
+.dolor-header{padding:14px 16px;font-family:'SFMono-Regular',Consolas,monospace;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border-bottom:2px solid;}
+.dolor-row{display:contents;}
+.dolor-row > div{background:#0d0d0d;padding:16px;font-size:11px;line-height:1.6;border-bottom:1px solid #1e1e1e;font-weight:300;}
+.dolor-row:last-child > div{border-bottom:none;}
+.dolor-row .sol{color:#1a7a3a !important;}
+
+@media(max-width:900px){
+  .dolor-grid{grid-template-columns:1fr;}
+}
+
+@media print{
+  nav{display:none;}
+  #hero{min-height:auto;padding-top:0;}
+  body{background:#fff;color:#000;}
+  .reveal,.reveal-scale{opacity:1;transform:none;}
+}
+
+/* ─── ANIMATIONS ─── */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1);}
+.reveal.on{opacity:1;transform:translateY(0);}
+.reveal-scale{opacity:0;transform:scale(.96);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1);}
+.reveal-scale.on{opacity:1;transform:scale(1);}
+
+/* ─── NAV HOVER ─── */
+.nav-links a{position:relative;}
+.nav-links a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:#ff4f01;transition:width .35s cubic-bezier(.22,1,.36,1);}
+.nav-links a:hover::after{width:100%;}
+.nav-links a:hover{color:#fff!important;}
+
+/* ─── HERO PARALLAX ─── */
+.hero-wm{will-change:transform;}
+
+/* ─── INFO GRID HOVER ─── */
+.infoc{transition:background .3s ease;position:relative;}
+.infoc:hover{background:#131313;}
+.infoc::after{content:'';position:absolute;top:0;left:0;width:2px;height:0;background:#ff4f01;transition:height .35s cubic-bezier(.22,1,.36,1);}
+.infoc:hover::after{height:100%;}
+
+/* ─── METRIC COUNTER ─── */
+.mc{transition:background .3s ease;}
+.mc:hover{background:#131313;}
+.mc .n{transition:color .3s ease;}
+.mc:hover .n{color:#fff;}
+
+/* ─── CLOE INSIGHT HOVER ─── */
+.cloe-insight{transition:border-color .4s ease,box-shadow .4s ease;}
+.cloe-insight:hover{box-shadow:0 0 0 1px rgba(255,79,1,.08);}
+
+/* ─── TABLE ROW ─── */
+tr{transition:background .25s ease;}
+tr:hover td{color:rgba(255,255,255,.8);}
+tr:hover td:first-child{color:#fff;}
+
+/* ─── SCENE CARDS ─── */
+.scene{transition:transform .4s cubic-bezier(.22,1,.36,1),box-shadow .4s ease;cursor:default;}
+.scene:hover{transform:translateY(-4px);box-shadow:0 20px 40px -12px rgba(0,0,0,.5);}
+.scene-tag{transition:border-color .3s ease,color .3s ease;}
+.scene:hover .scene-tag{border-color:rgba(255,255,255,.2);}
+
+/* ─── DOLOR ROWS ─── */
+.dolor-row > div{transition:background .25s ease;}
+.dolor-row:hover > div{background:#141414!important;}
+
+/* ─── AGENDA ─── */
+.agenda-item{transition:padding-left .35s ease,border-color .35s ease;cursor:default;}
+.agenda-item:hover{padding-left:8px;border-color:#333;}
+.agenda-item:hover .agenda-t{color:#ff4f01;}
+.agenda-t{transition:color .3s ease;}
+
+/* ─── QUESTION CARDS ─── */
+.q{transition:background .3s ease,padding-left .35s ease;}
+.q:hover{background:#131313;padding-left:20px;}
+.q-d{transition:transform .4s cubic-bezier(.22,1,.36,1),background .3s ease;}
+.q:hover .q-d{transform:scale(1.5);background:#fff;}
+
+/* ─── SMOOTH SCROLL ─── */
+html{scroll-behavior:smooth;}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}
+  .reveal,.reveal-scale{opacity:1;transform:none;}
+}
+@media(max-width:768px){
+  .infog,.cloe-grid,.gaps,.qs{grid-template-columns:1fr;}
+  .scenes{grid-template-columns:1fr;}
+  .mr{grid-template-columns:1fr;}
+  section{padding:40px 16px;}
+  .hero-c{padding:60px 16px 30px;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo"><span class="acc">[</span>GP<span class="acc">]</span> Preminuta</div>
+  <ul class="nav-links">
+    <li><a href="#preparacion">Preparación</a></li>
+    <li><a href="#cloe">Cloe</a></li>
+    <li><a href="#soluciones">Estrategia</a></li>
+    <li><a href="#agenda">Agenda</a></li>
+    <li><a href="#preguntas">Preguntas</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero" style="border:none;" data-parallax>
+  <div class="hero-wm" aria-hidden="true">14·V</div>
+  <div class="hero-c">
+    <div class="hero-e">Documento de preparación</div>
+    <h1 class="hero-h">
+      Preminuta ·<br><em>Reunión 14 mayo</em>
+    </h1>
+    <p class="hero-p">
+      Jaime · Tucapel Jiménez 40<br>
+      Cristian, Giorgio — Otowill (Argentina), OPA (Brasil), Cloe (Chile)
+    </p>
+  </div>
+</section>
+
+<!-- LLEGADA -->
+<section id="preparacion" class="reveal">
+  <div class="in">
+    <div class="section-sub reveal reveal-delay-1">// Cómo llegar</div>
+    <div class="infog reveal reveal-delay-2">
+      <div class="infoc">
+        <h3>Dirección</h3>
+        <p>Tucapel Jiménez 40, Santiago.<br>Oficinas de Jaime.</p>
+      </div>
+      <div class="infoc">
+        <h3>Mi rol en la reunión</h3>
+        <p>No soy "el diseñador". Soy el que entiende el mercado chileno y puede traducir eso en una estrategia de marca que le gane a Cloe.</p>
+      </div>
+      <div class="infoc">
+        <h3>Lo que llevo</h3>
+        <p>Esta preminuta impresa + estudio de mercado en iPad. No necesito proyectar nada — el papel es más poderoso en una reunión chica.</p>
+      </div>
+      <div class="infoc">
+        <h3>Mi postura</h3>
+        <p>No ofrezco servicios hoy. Escucho, pregunto, identifico dónde puedo agregar valor real. La venta viene después, cuando entienda bien el problema.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 SCENARIOS -->
+<section class="reveal">
+  <div class="in">
+    <div class="section-sub reveal reveal-delay-1">// Qué puedo ofrecer</div>
+    <div class="section-h reveal reveal-delay-2">3 escenarios posibles.</div>
+    <p class="reveal reveal-delay-3" style="font-size:12px;color:#666;margin-top:8px;max-width:600px;line-height:1.6;">
+      Sin saber aún qué necesitan, estos son los caminos más probables que podemos explorar juntos.
+    </p>
+
+    <div class="scenes reveal reveal-delay-3">
+      <div class="scene">
+        <div class="scene-num">A</div>
+        <div class="scene-t">Entrada Rápida</div>
+        <div class="scene-d">Si ya tienen distribución. Branding local + packaging + campaña digital. Posicionamiento rápido contra Cloe.</div>
+        <span class="scene-tag" style="color:#1a7a3a;">Medio riesgo</span>
+      </div>
+      <div class="scene">
+        <div class="scene-num">B</div>
+        <div class="scene-t">Construcción de Marca</div>
+        <div class="scene-d">Si parten de cero. Estrategia completa: identidad, web, redes social media, contenido, activación en salones.</div>
+        <span class="scene-tag" style="color:#c5561a;">Mayor inversión</span>
+      </div>
+      <div class="scene">
+        <div class="scene-num">C</div>
+        <div class="scene-t">Mínimo Viable</div>
+        <div class="scene-d">Para testear rápido. Análisis de mercado + landing page + campaña piloto en Instagram. Validar antes de escalar.</div>
+        <span class="scene-tag" style="color:#75aadb;">Bajo riesgo</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CLOE ANALYSIS -->
+<section id="cloe" class="reveal">
+  <div class="in">
+    <div class="section-sub reveal reveal-delay-1">// Análisis de marcas</div>
+    <div class="section-h reveal reveal-delay-2">Perfiles completos.</div>
+
+    <div class="cloe-insight reveal reveal-delay-3" style="border-color:#75aadb;">
+      <div class="cloe-head">
+        <div class="cloe-name" style="color:#75aadb;">🇦🇷 Otowill · Argentina</div>
+        <div class="cloe-stats">
+          <span class="cloe-stat"><strong style="color:#75aadb;">266K</strong> seguidores IG</span>
+          <span class="cloe-stat"><strong style="color:#75aadb;">1,918</strong> posts</span>
+          <span class="cloe-stat"><strong style="color:#1a7a3a;">✅ Vegano + CF</strong></span>
+        </div>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,.5);line-height:1.6;margin-bottom:12px;">
+        PyME argentina de San Fernando, Bs. As. <strong style="color:#fff;">Familia Frascogna</strong> (Luciana Frascogna).
+        <strong style="color:#75aadb;">Crecimiento 25-30% anual</strong>. Triplicó producción en 4 años.
+        Chile es su <strong style="color:#fff;">#1 mercado de exportación</strong>. 1,798 envíos internacionales registrados.
+        Ya vende en Chile a través de <strong style="color:#fff;">Capilar Global Chile</strong> y distribuidores.
+      </div>
+
+      <div class="cloe-grid">
+        <div class="cloe-item"><div class="tag">Estrella</div><div class="val"><strong style="color:#fff;">Socorro Capilar</strong> — Tratamiento múltiple acción. Spray, frasco y sobre. Su producto más vendido.</div></div>
+        <div class="cloe-item"><div class="tag">Líneas clave</div><div class="val"><strong style="color:#fff;">Tsunami · Cielo Color · Blonde Power · Anabolic Maxx · Cicatrihair</strong> — Amplio portafolio capilar + línea facial.</div></div>
+        <div class="cloe-item"><div class="tag">Atributos</div><div class="val"><strong style="color:#1a7a3a;">Vegano · Cruelty Free · Sin TACC · Sin parabenos</strong> — Neutraliza la ventaja de Cloe.</div></div>
+        <div class="cloe-item"><div class="tag">Distribución</div><div class="val"><strong style="color:#fff;">Argentina:</strong> e-commerce propio, ML, farmacias, distribuidoras. <strong style="color:#fff;">Chile:</strong> Capilar Global, distribuidores. En expansión.</div></div>
+      </div>
+    </div>
+
+    <div class="cloe-insight reveal reveal-delay-4" style="margin-top:16px;border-color:#c5561a;">
+      <div class="cloe-head">
+        <div class="cloe-name" style="color:#c5561a;">🇧🇷 OPA · Brasil</div>
+        <div class="cloe-stats">
+          <span class="cloe-stat"><strong style="color:#c5561a;">⚠️</strong> Sin datos públicos</span>
+          <span class="cloe-stat"><strong style="color:#ff4f01;">Cosmética</strong> (confirmado)</span>
+        </div>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,.5);line-height:1.6;">
+        Marca brasileña de cosmética. No se encontró presencia digital significativa para análisis público.
+        <strong style="color:#fff;">Pregunta clave para la reunión:</strong> ¿Qué líneas tiene OPA? ¿Posicionamiento en Brasil?
+        ¿Ya exporta o esta sería su primera experiencia internacional?
+      </div>
+    </div>
+
+    <div class="cloe-insight reveal reveal-delay-5" style="margin-top:16px;border-color:#d52b1e;">
+      <div class="cloe-head">
+        <div class="cloe-name" style="color:#d52b1e;">🇨🇱 Cloe Professional · Chile</div>
+        <div class="cloe-stats">
+          <span class="cloe-stat"><strong style="color:#d52b1e;">95K</strong> seguidores IG</span>
+          <span class="cloe-stat"><strong style="color:#d52b1e;">1,089</strong> posts</span>
+          <span class="cloe-stat"><strong>~$15,990</strong> precio prom.</span>
+        </div>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,.5);line-height:1.6;margin-bottom:12px;">
+        Marca chilena de <strong style="color:#fff;">Laboratorios Rouvé</strong>. 5 años en mercado. Target <strong style="color:#fff;">millennial femenino</strong>.
+        Cruelty free + vegano + sin parabenos. Fuerte en <strong style="color:#fff;">Instagram + Falabella + salones</strong>.
+      </div>
+      <div class="cloe-grid">
+        <div class="cloe-item"><div class="tag">Estrella</div><div class="val"><strong style="color:#fff;">OOH MY COLOR</strong> — Máscaras progresivas de color. Diferenciador fuerte.</div></div>
+        <div class="cloe-item"><div class="tag">Protección</div><div class="val"><strong style="color:#fff;">HOT GLOW</strong> — Protectores térmicos hasta 230°C.</div></div>
+        <div class="cloe-item"><div class="tag">Reparación</div><div class="val"><strong style="color:#fff;">PURE SENSATION + Strange Love</strong> — Tratamientos intensivos con activos naturales.</div></div>
+        <div class="cloe-item"><div class="tag">Lanzamiento</div><div class="val"><strong style="color:#fff;">Fascination Oil Rose</strong> — Sérum capilar nutritivo. Lanzamiento 2025.</div></div>
+      </div>
+    </div>
+
+    <div class="section-sub reveal reveal-delay-4" style="margin-top:32px;">// Comparativa actualizada</div>
+    <div class="grid2 reveal reveal-delay-5">
+      <div class="ch" style="color:#75aadb;">🇦🇷 Otowill</div>
+      <div class="ch" style="color:#d52b1e;">🇨🇱 Cloe</div>
+      <div class="row"><div class="f">Instagram</div><div style="color:#1a7a3a;"><strong>266K</strong></div><div>95K</div></div>
+      <div class="row"><div class="f">Cruelty Free</div><div style="color:#1a7a3a;">✅ Sí</div><div style="color:#1a7a3a;">✅ Sí</div></div>
+      <div class="row"><div class="f">Vegano</div><div style="color:#1a7a3a;">✅ Sí</div><div style="color:#1a7a3a;">✅ Sí</div></div>
+      <div class="row"><div class="f">Presencia Chile</div><div style="color:#c5561a;">Ya exporta (Capilar Global)</div><div>5 años consolidada</div></div>
+      <div class="row"><div class="f">Precio</div><div>Gama media-baja</div><div>Gama media (~$15,990)</div></div>
+      <div class="row"><div class="f">Distribución Chile</div><div>Distribuidores + online</div><div>Falabella, ML, salones</div></div>
+      <div class="row"><div class="f">Know-how</div><div>Trayectoria + exportación</div><div>5 años local</div></div>
+      <div class="row"><div class="f">Crecimiento</div><div style="color:#1a7a3a;">25-30% anual</div><div>Estable</div></div>
+      <div class="row"><div class="f">Diferenciación</div><div>266K seguidores, tecnología, precio</div><div>Marca local, ética</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- DOLOR + OPORTUNIDAD + SOLUCIÓN -->
+<section id="soluciones" class="reveal">
+  <div class="in">
+    <div class="section-sub reveal reveal-delay-1">// Estrategia</div>
+    <div class="section-h reveal reveal-delay-2">Dolor · Oportunidad · Solución.</div>
+    <p class="reveal reveal-delay-3" style="font-size:12px;color:#666;margin-top:6px;max-width:600px;line-height:1.5;">
+      Lo que Cloe no está cubriendo, traducido en oportunidades concretas para Otowill.
+    </p>
+
+    <div class="dolor-grid reveal reveal-delay-4">
+      <div class="dolor-header" style="background:#c51a1a20;border-color:#c51a1a;color:#c51a1a;">DOLOR</div>
+      <div class="dolor-header" style="background:#ff4f0110;border-color:#ff4f01;color:#ff4f01;">OPORTUNIDAD</div>
+      <div class="dolor-header" style="background:#1a7a3a20;border-color:#1a7a3a;color:#1a7a3a;">SOLUCIÓN</div>
+
+      <div class="dolor-row"><div class="dolor-c" style="color:#c51a1a;">Cloe no tiene línea masculina. Target 100% femenino.</div><div class="dolor-c" style="color:#ff4f01;">Mercado capilar masculino en Chile desatendido por marcas profesionales jóvenes.</div><div class="dolor-c" style="color:#1a7a3a;">Lanzar línea Otowill Men. Packaging diferenciado, comunicación agresiva en Instagram, venta en barberías.</div></div>
+
+      <div class="dolor-row"><div class="dolor-c" style="color:#c51a1a;">Cloe usa envases tradicionales. Sin mensaje sustentable.</div><div class="dolor-c" style="color:#ff4f01;">Tendencia fuerte en Chile: natural, orgánico, sustentable, sin plástico.</div><div class="dolor-c" style="color:#1a7a3a;">Posicionar Otowill como marca sustentable: envases reciclados, tintes sin amoníaco, shampoos sólidos.</div></div>
+
+      <div class="dolor-row"><div class="dolor-c" style="color:#c51a1a;">Cloe depende de Falabella. Canal único, vulnerable.</div><div class="dolor-c" style="color:#ff4f01;">Salones buscan marcas que los capaciten. Poco explorado por marcas jóvenes.</div><div class="dolor-c" style="color:#1a7a3a;">Entrar por salones con programa de formación gratuita. Red de embajadores estilistas. B2B + e-commerce.</div></div>
+
+      <div class="dolor-row"><div class="dolor-c" style="color:#c51a1a;">Cloe en gama media (~$15,990). Sin entry level.</div><div class="dolor-c" style="color:#ff4f01;">Segmento masivo sensible a precio busca calidad a menor costo.</div><div class="dolor-c" style="color:#1a7a3a;">Línea entry-level 20-30% más barata. Kits básicos, formatos chicos. "Calidad profesional a precio justo."</div></div>
+
+      <div class="dolor-row"><div class="dolor-c" style="color:#c51a1a;">Cloe no educa a profesionales. Sin comunidad técnica.</div><div class="dolor-c" style="color:#ff4f01;">Peluqueros prescriben marcas. Capacitarlos genera lealtad y venta recurrente.</div><div class="dolor-c" style="color:#1a7a3a;">Academia Otowill: talleres presenciales y online. Certificación gratuita. Sell-in asegurado por prescripción técnica.</div></div>
+
+      <div class="dolor-row"><div class="dolor-c" style="color:#c51a1a;">Cloe no usa su origen como diferenciador.</div><div class="dolor-c" style="color:#ff4f01;">"Tecnología argentina" = innovación, calidad, expertise. Diferenciación real.</div><div class="dolor-c" style="color:#1a7a3a;">Posicionar Otowill como "innovación capilar argentina con respaldo científico". Storytelling de origen y calidad de exportación.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- MEETING FLOW -->
+<section id="agenda" class="reveal">
+  <div class="in">
+    <div class="section-sub reveal reveal-delay-1">// Estructura de la reunión</div>
+    <div class="section-h reveal reveal-delay-2">Agenda propuesta.</div>
+
+    <div class="agenda reveal reveal-delay-3">
+      <div class="agenda-item reveal reveal-delay-1">
+        <div class="agenda-time">00:00–10m</div>
+        <div>
+          <div class="agenda-t">Catch-up y contexto</div>
+          <div class="agenda-d">¿Cómo están? ¿Qué ha pasado desde la última reunión? Jaime y Cristian cuentan su visión.</div>
+        </div>
+      </div>
+      <div class="agenda-item reveal reveal-delay-2">
+        <div class="agenda-time">10–25m</div>
+        <div>
+          <div class="agenda-t">Descubrimiento (yo pregunto)</div>
+          <div class="agenda-d">Acá es donde la gente se luce o se hunde. Preguntas sobre distribución, timing, presupuesto, competencia, miedos. Escuchar 80%, hablar 20%.</div>
+        </div>
+      </div>
+      <div class="agenda-item reveal reveal-delay-3">
+        <div class="agenda-time">25–40m</div>
+        <div>
+          <div class="agenda-t">Presentación de insights</div>
+          <div class="agenda-d">Comparto lo que investigué de Cloe + el mercado. No como "mira lo que sé", sino como "esto es lo que tenemos que resolver juntos".</div>
+        </div>
+      </div>
+      <div class="agenda-item reveal reveal-delay-4">
+        <div class="agenda-time">40–55m</div>
+        <div>
+          <div class="agenda-t">Los 3 escenarios</div>
+          <div class="agenda-d">Propongo A, B, C. Veo hacia dónde se inclinan. Pregunto "¿cuál les hace más sentido?" en vez de vender uno.</div>
+        </div>
+      </div>
+      <div class="agenda-item reveal reveal-delay-5">
+        <div class="agenda-time">55–60m</div>
+        <div>
+          <div class="agenda-t">Cierre y próximo paso</div>
+          <div class="agenda-d">"Les preparo un brief con lo que conversamos y en una semana se los comparto." Salir con un compromiso concreto, aunque sea pequeño.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PREGUNTAS -->
+<section id="preguntas" class="reveal" style="border-bottom:1px solid #1e1e1e;">
+  <div class="in">
+    <div class="section-sub reveal reveal-delay-1">// Las preguntas</div>
+    <div class="section-h reveal reveal-delay-2">Mi set de preguntas.</div>
+    <p class="reveal reveal-delay-3" style="font-size:11px;color:#666;margin-top:6px;max-width:500px;line-height:1.5;">
+      Las anoto en mi cuaderno y las marco a medida que las voy haciendo.
+      No las leo como checklist — las lanzo natural en la conversación.
+    </p>
+
+    <div class="qs reveal reveal-delay-3">
+      <div class="q reveal reveal-delay-1"><div class="q-d"></div><div class="q-t"><strong>¿Cómo ven hoy la oportunidad</strong> para Otowill y OPA en Chile?</div></div>
+      <div class="q reveal reveal-delay-2"><div class="q-d"></div><div class="q-t"><strong>¿Qué es lo que más les preocupa</strong> de enfrentar a Cloe?</div></div>
+      <div class="q reveal reveal-delay-3"><div class="q-d"></div><div class="q-t"><strong>¿Ya tienen distribuidores</strong> o están en esa fase?</div></div>
+      <div class="q reveal reveal-delay-4"><div class="q-d"></div><div class="q-t"><strong>¿Qué expectativas de ventas</strong> tienen para el primer año?</div></div>
+      <div class="q reveal reveal-delay-5"><div class="q-d"></div><div class="q-t"><strong>¿Qué han hecho hasta ahora?</strong> ¿Web, redes, packaging?</div></div>
+      <div class="q reveal reveal-delay-1"><div class="q-d"></div><div class="q-t"><strong>¿Cuál es el rol que esperan de mí?</strong></div></div>
+      <div class="q reveal reveal-delay-2"><div class="q-d"></div><div class="q-t"><strong>¿Qué presupuesto tienen estimado</strong> para el lanzamiento y branding?</div></div>
+      <div class="q reveal reveal-delay-3"><div class="q-d"></div><div class="q-t"><strong>¿Qué timeline</strong> están manejando?</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-logo"><span class="acc">[</span>GP<span class="acc">]</span> Giorgio Pandolffo</div>
+  <div class="f-copy">14 mayo 2026 · Tucapel Jiménez 40</div>
+</footer>
+
+<script>
+/* Scroll Reveal */
+const io=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('on');io.unobserve(x.target);}});},{threshold:0.06});
+document.querySelectorAll('.reveal,.reveal-scale').forEach(el=>io.observe(el));
+
+/* Parallax Hero */
+const heroWm=document.querySelector('.hero-wm');
+if(heroWm){
+  let ticking=false;
+  window.addEventListener('scroll',()=>{
+    if(!ticking){
+      requestAnimationFrame(()=>{
+        const scrolled=window.scrollY;
+        const hero=document.querySelector('#hero');
+        if(hero){
+          const heroBottom=hero.offsetTop+hero.offsetHeight;
+          if(scrolled<heroBottom){
+            heroWm.style.transform=`translateY(-50%) translateY(${scrolled*.12}px)`;
+          }
+        }
+        ticking=false;
+      });
+      ticking=true;
+    }
+  },{passive:true});
+}
+</script>
+</body>
+</html>
