@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LAB 080 — Studio & Systems · Estudio Nativo en IA</title>
+<link rel="icon" type="image/webp" href="assets/images/FAVICON-STUDIO.webp">
 <link rel="canonical" href="https://lab080.studio">
 <meta name="description" content="LAB 080 es un laboratorio donde un estudio creativo y un estudio de tecnología se encuentran. Producimos imagen, video, branding, automatizaciones y productos digitales — todo en un solo equipo.">
 <meta property="og:title" content="LAB 080 — Studio & Systems · Estudio Nativo en IA">
@@ -46,13 +47,19 @@ a{color:inherit;text-decoration:none}
   --border:#1E1E1E;--muted:#666;--white:#fff;
 }
 
+/* ── TOP BAR ── */
+.top-bar{
+  position:fixed;top:0;left:0;right:0;z-index:101;
+  background:#111111;padding:4px 24px;text-align:center;
+}
+.top-bar img{height:18px;display:inline-block;vertical-align:middle}
 /* ── NAV ── */
 nav{
-  position:fixed;top:0;left:0;right:0;z-index:100;
+  position:fixed;top:24px;left:0;right:0;z-index:100;
   display:flex;justify-content:space-between;align-items:center;
   padding:10px 24px;background:#111111;
 }
-.nav-logo{font-size:14px;font-weight:600;color:#fff}
+.nav-logo img{height:18px;display:block}
 .nav-right{display:flex;align-items:center;gap:20px}
 .nav-link{font-size:13px;font-weight:500;color:rgba(255,255,255,.65);transition:color .2s}
 .nav-link:hover{color:#fff}
@@ -68,6 +75,11 @@ nav{
   min-height:100vh;background:#e13c26;position:relative;
   display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;
 }
+.hero-watermark{
+  position:absolute;right:clamp(24px,4vw,60px);top:50%;transform:translateY(-50%);
+  pointer-events:none;user-select:none;width:clamp(100px,18vw,280px);z-index:5;
+}
+.hero-watermark img{width:100%;height:auto;display:block;filter:brightness(0)}
 .hero-content{
   position:relative;z-index:2;padding:0 24px;padding-top:100px;flex:1;
   display:flex;flex-direction:column;justify-content:center;
@@ -146,6 +158,19 @@ nav{
   padding:22px 0;font-style:italic;
 }
 .brand-row:hover .brand-cat,.brand-row.active .brand-cat{color:rgba(0,0,0,.5)}
+.brand-thumb{display:none}
+
+/* ── BRAND FLOATING IMAGE ── */
+.brand-floating-img{
+  position:fixed;pointer-events:none;z-index:999;
+  width:260px;height:340px;object-fit:cover;border-radius:8px;
+  opacity:0;
+  transform:translate(-50%,-50%) scale(0.6);
+  transition:opacity .35s cubic-bezier(.16,1,.3,1),transform .35s cubic-bezier(.16,1,.3,1);
+  will-change:transform,opacity,left,top;
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+.brand-floating-img.visible{opacity:1;transform:translate(-50%,-50%) scale(1)}
 
 /* brand expand */
 .brand-detail{
@@ -156,8 +181,10 @@ nav{
 .brand-detail.open{max-height:280px}
 .brand-detail-inner{
   max-width:1200px;padding:28px 88px 36px;
-  display:grid;grid-template-columns:1fr;gap:40px;align-items:start;
+  display:grid;grid-template-columns:200px 1fr;gap:40px;align-items:start;
 }
+.bdi-thumb{overflow:hidden;height:140px}
+.bdi-thumb img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(.6) brightness(.6)}
 .bdi-content{}
 .bdi-label{
   font-family:'Chivo Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;
@@ -353,7 +380,7 @@ footer{background:#0a0a0a;border-top:1px solid var(--border)}
 @media(max-width:768px){.footer-grid{grid-template-columns:1fr 1fr;gap:32px}}
 @media(max-width:480px){.footer-grid{grid-template-columns:1fr;gap:28px}}
 .footer-brand{}
-.footer-brand-name{font-size:20px;font-weight:700;color:#fff;margin-bottom:16px;display:block}
+.footer-logo-img{height:22px;margin-bottom:16px;display:block}
 .footer-desc{font-size:13px;color:var(--muted);line-height:1.65;max-width:280px;margin-bottom:20px}
 .footer-social{display:flex;gap:10px}
 .footer-social a{
@@ -376,7 +403,8 @@ footer{background:#0a0a0a;border-top:1px solid var(--border)}
 @media(max-width:1000px){
   .brand-row{grid-template-columns:48px 1fr}
   .brand-cat{display:none}
-  .brand-detail-inner{padding:24px 48px 32px}
+  .brand-detail-inner{grid-template-columns:1fr;padding:24px 48px 32px}
+  .bdi-thumb{display:none}
 }
 @media(max-width:900px){
   .problem-grid{grid-template-columns:repeat(2,1fr)}
@@ -388,10 +416,12 @@ footer{background:#0a0a0a;border-top:1px solid var(--border)}
 @media(max-width:600px){
   .problem-grid{grid-template-columns:1fr}
   .hero-headline{font-size:44px;letter-spacing:-1px}
+  .hero-watermark{right:auto;left:50%;transform:translate(-50%,-50%);width:60vw;max-width:200px}
   .hero-ctas{flex-direction:column;align-items:flex-start}
   footer{flex-direction:column;align-items:flex-start;gap:20px}
   .footer-links{flex-wrap:wrap;gap:16px}
   .brand-row{grid-template-columns:36px 1fr}
+  .brand-thumb{display:none}
   .brand-detail-inner{padding:20px 24px 28px}
   .svc-body{padding-left:40px}
 }
@@ -401,13 +431,34 @@ footer{background:#0a0a0a;border-top:1px solid var(--border)}
 .reveal.on{opacity:1;transform:none}
 .d1{transition-delay:.1s}.d2{transition-delay:.18s}.d3{transition-delay:.26s}.d4{transition-delay:.34s}
 
+/* ── SECTION VIDEO BACKGROUNDS ── */
+.section-bg-video{
+  position:absolute;inset:0;overflow:hidden;z-index:0;
+}
+.section-bg-video video{
+  width:100%;height:100%;object-fit:cover;
+  aspect-ratio:16/9;
+  filter:brightness(.3) saturate(.5);
+}
+.section-bg-content{
+  position:relative;z-index:1;
+}
+#problem > :not(.section-bg-video),
+#offline > :not(.section-bg-video),
+#services > :not(.section-bg-video),
+#faq > :not(.section-bg-video){
+  position:relative;z-index:1;
+}
 </style>
 </head>
 <body>
 
+<!-- TOP BAR -->
+<div class="top-bar"><img src="assets/images/barra.png" alt="LAB 080 — Estudio Nativo en IA"></div>
+
 <!-- NAV -->
 <nav id="nav">
-  <div class="nav-logo"><a href="#hero" style="color:#fff;text-decoration:none">LAB 080</a></div>
+  <div class="nav-logo"><a href="#hero"><img src="assets/images/LOGO-STUDIO.webp" alt="LAB 080 — Inicio"></a></div>
   <div class="nav-right">
     <a href="#services" class="nav-link">Servicios</a>
     <a href="#brands" class="nav-link">Marcas</a>
@@ -419,6 +470,7 @@ footer{background:#0a0a0a;border-top:1px solid var(--border)}
 <!-- HERO -->
 <section id="hero">
   <div id="waves-bg" style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:hidden;pointer-events:none;--x:-0.5rem;--y:50%;z-index:1"></div>
+  <div class="hero-watermark" aria-hidden="true"><img src="assets/images/LOGO-STUDIO.webp" alt=""></div>
   <div class="hero-content">
     <h1 class="hero-headline" data-scramble>
       Diseño + tecnología.<br>
@@ -475,9 +527,11 @@ footer{background:#0a0a0a;border-top:1px solid var(--border)}
       <span class="brand-idx">01</span>
       <span class="brand-name">Concha y Toro</span>
       <span class="brand-cat">Vitivinícola Global</span>
+      <div class="brand-thumb"><img src="assets/images/1.webp" alt="Concha y Toro"></div>
     </div>
     <div class="brand-detail" id="bd-01">
       <div class="brand-detail-inner">
+        <div class="bdi-thumb"><img src="assets/images/1.webp" alt="Concha y Toro"></div>
         <div class="bdi-content">
           <div class="bdi-label">01 — Vitivinícola Global</div>
           <div class="bdi-title">Concha y Toro</div>
@@ -495,9 +549,11 @@ footer{background:#0a0a0a;border-top:1px solid var(--border)}
       <span class="brand-idx">02</span>
       <span class="brand-name">Casillero del Diablo</span>
       <span class="brand-cat">Vino Premium Global</span>
+      <div class="brand-thumb"><img src="assets/images/2.webp" alt="Casillero del Diablo"></div>
     </div>
     <div class="brand-detail" id="bd-02">
       <div class="brand-detail-inner">
+        <div class="bdi-thumb"><img src="assets/images/2.webp" alt="Casillero del Diablo"></div>
         <div class="bdi-content">
           <div class="bdi-label">02 — Vino Premium Global</div>
           <div class="bdi-title">Casillero del Diablo</div>
@@ -515,9 +571,11 @@ footer{background:#0a0a0a;border-top:1px solid var(--border)}
       <span class="brand-idx">03</span>
       <span class="brand-name">Don Melchor</span>
       <span class="brand-cat">Vino Ícono de Chile</span>
+      <div class="brand-thumb"><img src="assets/images/3.webp" alt="Don Melchor"></div>
     </div>
     <div class="brand-detail" id="bd-03">
       <div class="brand-detail-inner">
+        <div class="bdi-thumb"><img src="assets/images/3.webp" alt="Don Melchor"></div>
         <div class="bdi-content">
           <div class="bdi-label">03 — Vino Ícono de Chile</div>
           <div class="bdi-title">Don Melchor</div>
@@ -535,9 +593,11 @@ footer{background:#0a0a0a;border-top:1px solid var(--border)}
       <span class="brand-idx">04</span>
       <span class="brand-name">Marqués de Casa Concha</span>
       <span class="brand-cat">Vinos Premium</span>
+      <div class="brand-thumb"><img src="assets/images/4.webp" alt="Marqués de Casa Concha"></div>
     </div>
     <div class="brand-detail" id="bd-04">
       <div class="brand-detail-inner">
+        <div class="bdi-thumb"><img src="assets/images/4.webp" alt="Marqués de Casa Concha"></div>
         <div class="bdi-content">
           <div class="bdi-label">04 — Vinos Premium</div>
           <div class="bdi-title">Marqués de Casa Concha</div>
@@ -555,9 +615,11 @@ footer{background:#0a0a0a;border-top:1px solid var(--border)}
       <span class="brand-idx">05</span>
       <span class="brand-name">Cono Sur</span>
       <span class="brand-cat">Vinos Sustentables</span>
+      <div class="brand-thumb"><img src="assets/images/1.webp" alt="Cono Sur"></div>
     </div>
     <div class="brand-detail" id="bd-05">
       <div class="brand-detail-inner">
+        <div class="bdi-thumb"><img src="assets/images/1.webp" alt="Cono Sur"></div>
         <div class="bdi-content">
           <div class="bdi-label">05 — Vinos Sustentables</div>
           <div class="bdi-title">Cono Sur</div>
@@ -575,9 +637,11 @@ footer{background:#0a0a0a;border-top:1px solid var(--border)}
       <span class="brand-idx">06</span>
       <span class="brand-name">Carozzi</span>
       <span class="brand-cat">Alimentos</span>
+      <div class="brand-thumb"><img src="assets/images/2.webp" alt="Carozzi"></div>
     </div>
     <div class="brand-detail" id="bd-06">
       <div class="brand-detail-inner">
+        <div class="bdi-thumb"><img src="assets/images/2.webp" alt="Carozzi"></div>
         <div class="bdi-content">
           <div class="bdi-label">06 — Alimentos</div>
           <div class="bdi-title">Carozzi</div>
@@ -595,9 +659,11 @@ footer{background:#0a0a0a;border-top:1px solid var(--border)}
       <span class="brand-idx">07</span>
       <span class="brand-name">Ambrosoli</span>
       <span class="brand-cat">Confitería</span>
+      <div class="brand-thumb"><img src="assets/images/3.webp" alt="Ambrosoli"></div>
     </div>
     <div class="brand-detail" id="bd-07">
       <div class="brand-detail-inner">
+        <div class="bdi-thumb"><img src="assets/images/3.webp" alt="Ambrosoli"></div>
         <div class="bdi-content">
           <div class="bdi-label">07 — Confitería</div>
           <div class="bdi-title">Ambrosoli</div>
@@ -615,9 +681,11 @@ footer{background:#0a0a0a;border-top:1px solid var(--border)}
       <span class="brand-idx">08</span>
       <span class="brand-name">Costa</span>
       <span class="brand-cat">Snacks & Galletas</span>
+      <div class="brand-thumb"><img src="assets/images/4.webp" alt="Costa"></div>
     </div>
     <div class="brand-detail" id="bd-08">
       <div class="brand-detail-inner">
+        <div class="bdi-thumb"><img src="assets/images/4.webp" alt="Costa"></div>
         <div class="bdi-content">
           <div class="bdi-label">08 — Snacks & Galletas</div>
           <div class="bdi-title">Costa</div>
@@ -635,9 +703,11 @@ footer{background:#0a0a0a;border-top:1px solid var(--border)}
       <span class="brand-idx">09</span>
       <span class="brand-name">Jumbo</span>
       <span class="brand-cat">Retail Supermercados</span>
+      <div class="brand-thumb"><img src="assets/images/1.webp" alt="Jumbo"></div>
     </div>
     <div class="brand-detail" id="bd-09">
       <div class="brand-detail-inner">
+        <div class="bdi-thumb"><img src="assets/images/1.webp" alt="Jumbo"></div>
         <div class="bdi-content">
           <div class="bdi-label">09 — Retail Supermercados</div>
           <div class="bdi-title">Jumbo</div>
@@ -655,9 +725,11 @@ footer{background:#0a0a0a;border-top:1px solid var(--border)}
       <span class="brand-idx">10</span>
       <span class="brand-name">Paris</span>
       <span class="brand-cat">Retail & Moda</span>
+      <div class="brand-thumb"><img src="assets/images/2.webp" alt="Paris"></div>
     </div>
     <div class="brand-detail" id="bd-10">
       <div class="brand-detail-inner">
+        <div class="bdi-thumb"><img src="assets/images/2.webp" alt="Paris"></div>
         <div class="bdi-content">
           <div class="bdi-label">10 — Retail & Moda</div>
           <div class="bdi-title">Paris</div>
@@ -675,9 +747,11 @@ footer{background:#0a0a0a;border-top:1px solid var(--border)}
       <span class="brand-idx">11</span>
       <span class="brand-name">Cencosud</span>
       <span class="brand-cat">Holding Retail</span>
+      <div class="brand-thumb"><img src="assets/images/3.webp" alt="Cencosud"></div>
     </div>
     <div class="brand-detail" id="bd-11">
       <div class="brand-detail-inner">
+        <div class="bdi-thumb"><img src="assets/images/3.webp" alt="Cencosud"></div>
         <div class="bdi-content">
           <div class="bdi-label">11 — Holding Retail</div>
           <div class="bdi-title">Cencosud</div>
@@ -695,9 +769,11 @@ footer{background:#0a0a0a;border-top:1px solid var(--border)}
       <span class="brand-idx">12</span>
       <span class="brand-name">Mastercat</span>
       <span class="brand-cat">Tecnología</span>
+      <div class="brand-thumb"><img src="assets/images/4.webp" alt="Mastercat"></div>
     </div>
     <div class="brand-detail" id="bd-12">
       <div class="brand-detail-inner">
+        <div class="bdi-thumb"><img src="assets/images/4.webp" alt="Mastercat"></div>
         <div class="bdi-content">
           <div class="bdi-label">12 — Tecnología</div>
           <div class="bdi-title">Mastercat</div>
@@ -716,6 +792,7 @@ footer{background:#0a0a0a;border-top:1px solid var(--border)}
 
 <!-- PROBLEM -->
 <section id="problem" style="position:relative">
+  <div class="section-bg-video"><video src="assets/videos/hf_20260117_214118_cafbd2cf-7111-404b-8fa9-ab9dfae17744.mp4" autoplay muted loop playsinline></video></div>
   <p class="problem-headline reveal" data-scramble>
     Producir bien siempre ha sido caro,<br>
     lento y reservado para pocos.
@@ -750,8 +827,9 @@ footer{background:#0a0a0a;border-top:1px solid var(--border)}
   </div>
 </section>
 
-<!-- WORK OFFLINE — Zero Logistics -->
+<!-- WORK OFFLINE -->
 <section id="offline" style="position:relative">
+  <div class="section-bg-video"><video src="assets/videos/hf_20260128_185004_0f1d40ae-cfbb-474e-b42d-24c60fc22171.mp4" autoplay muted loop playsinline></video></div>
   <div class="offline-inner">
     <div class="machine-diagram reveal">
       <div class="diagram-title">// Cómo entregamos</div>
@@ -810,11 +888,11 @@ footer{background:#0a0a0a;border-top:1px solid var(--border)}
 
 <!-- SERVICES -->
 <section id="services" style="position:relative">
+  <div class="section-bg-video"><video src="assets/videos/hf_20260129_053009_1e612e18-b914-47d8-81da-35550747c686.mp4" autoplay muted loop playsinline></video></div>
   <div class="services-inner">
     <div class="services-eyebrow">Studio · Systems</div>
     <h2 class="services-headline reveal" data-scramble>Studio & Systems.<br>Un solo laboratorio.</h2>
     <p class="services-sub reveal d1">STUDIO existe para lo que se ve. SYSTEMS existe para lo que funciona. Juntos cierran el espacio que la mayoría de los estudios deja abierto entre la creatividad y la tecnología.</p>
-
     <div class="svc-list">
       <div class="svc-item">
         <div class="svc-row" onclick="toggleSvc(this)">
@@ -830,7 +908,6 @@ footer{background:#0a0a0a;border-top:1px solid var(--border)}
           </div>
         </div></div>
       </div>
-
       <div class="svc-item">
         <div class="svc-row" onclick="toggleSvc(this)">
           <span class="svc-num">02</span>
@@ -845,7 +922,6 @@ footer{background:#0a0a0a;border-top:1px solid var(--border)}
           </div>
         </div></div>
       </div>
-
       <div class="svc-item">
         <div class="svc-row" onclick="toggleSvc(this)">
           <span class="svc-num">03</span>
@@ -860,7 +936,6 @@ footer{background:#0a0a0a;border-top:1px solid var(--border)}
           </div>
         </div></div>
       </div>
-
       <div class="svc-item">
         <div class="svc-row" onclick="toggleSvc(this)">
           <span class="svc-num">04</span>
@@ -875,7 +950,6 @@ footer{background:#0a0a0a;border-top:1px solid var(--border)}
           </div>
         </div></div>
       </div>
-
       <div class="svc-item">
         <div class="svc-row" onclick="toggleSvc(this)">
           <span class="svc-num">05</span>
@@ -890,7 +964,6 @@ footer{background:#0a0a0a;border-top:1px solid var(--border)}
           </div>
         </div></div>
       </div>
-
       <div class="svc-item">
         <div class="svc-row" onclick="toggleSvc(this)">
           <span class="svc-num">06</span>
@@ -938,6 +1011,7 @@ footer{background:#0a0a0a;border-top:1px solid var(--border)}
 
 <!-- FAQ -->
 <section id="faq" style="position:relative">
+  <div class="section-bg-video"><video src="assets/videos/hf_20260129_130125_a55fb98f-717f-4003-a5e3-28331fde2284.mp4" autoplay muted loop playsinline></video></div>
   <div class="faq-inner">
     <div class="faq-eyebrow">FAQ</div>
     <h2 class="faq-headline reveal" data-scramble>Preguntas<br>frecuentes.</h2>
@@ -994,7 +1068,7 @@ footer{background:#0a0a0a;border-top:1px solid var(--border)}
   <div class="footer-card">
     <div class="footer-grid">
       <div class="footer-brand">
-        <span class="footer-brand-name">LAB 080</span>
+        <img src="assets/images/LOGO-STUDIO.webp" alt="LAB 080" class="footer-logo-img" style="filter:brightness(0) invert(1)">
         <p class="footer-desc" data-es="Un laboratorio donde lo visual y lo técnico trabajan juntos. Studio & Systems, un solo equipo." data-en="A lab where visual and technical work together. Studio & Systems, one team.">Un laboratorio donde lo visual y lo técnico trabajan juntos. Studio & Systems, un solo equipo.</p>
         <div class="footer-social">
           <a href="https://instagram.com/lab080.studio" target="_blank" rel="noopener" aria-label="Instagram">
@@ -1074,6 +1148,51 @@ function toggleSvc(row) {
   document.querySelectorAll('.svc-item.open').forEach(i => i.classList.remove('open'));
   if (!isOpen) item.classList.add('open');
 }
+
+// Brand floating image hover
+(function(){
+  if(window.innerWidth < 768) return;
+  const rows = document.querySelectorAll('.brand-row');
+  const img = document.createElement('img');
+  img.className = 'brand-floating-img';
+  document.body.appendChild(img);
+
+  let hideTimeout = null, raf = null;
+  let mouseX = 0, mouseY = 0;
+
+  function follow(){
+    img.style.left = mouseX + 'px';
+    img.style.top = mouseY + 'px';
+    raf = requestAnimationFrame(follow);
+  }
+
+  rows.forEach(row => {
+    const thumb = row.querySelector('.brand-thumb img');
+    if(!thumb) return;
+    const src = thumb.getAttribute('src');
+
+    row.addEventListener('mouseenter', function(){
+      clearTimeout(hideTimeout);
+      if(raf) cancelAnimationFrame(raf);
+      img.setAttribute('src', src);
+      img.classList.add('visible');
+      raf = requestAnimationFrame(follow);
+    });
+
+    row.addEventListener('mousemove', function(e){
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    row.addEventListener('mouseleave', function(){
+      if(raf){ cancelAnimationFrame(raf); raf = null; }
+      img.classList.remove('visible');
+      hideTimeout = setTimeout(function(){
+        if(!img.classList.contains('visible')) img.removeAttribute('src');
+      }, 350);
+    });
+  });
+})();
 
 // FAQ toggle
 function toggleFaq(q) {
@@ -1252,7 +1371,6 @@ function toggleFaq(q) {
 </script>
 
 <script>
-// EN/ES Language Toggle
 (function(){
   var lang = localStorage.getItem('lab080-lang') || 'es';
   var toggle = document.querySelector('.lang-toggle');
@@ -1277,7 +1395,6 @@ function toggleFaq(q) {
 })();
 </script>
 <script>
-// Text Scramble — section titles
 (function(){
   'use strict';
   var defaultChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -1316,11 +1433,9 @@ function toggleFaq(q) {
   var els = document.querySelectorAll('[data-scramble]');
   if(els.length === 0) return;
 
-  // Hero headline — trigger on load
   var hero = document.querySelector('.hero-headline');
   if(hero) setTimeout(function(){ scramble(hero, { duration: 600 }); }, 400);
 
-  // Observer for scroll-triggered titles
   var obs = new IntersectionObserver(function(entries){
     entries.forEach(function(e){
       if(e.isIntersecting){
