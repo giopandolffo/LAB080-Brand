@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LAB 080 — Studio & Systems · Estudio Nativo en IA</title>
+<link rel="canonical" href="https://lab080.studio">
+<meta name="description" content="LAB 080 es un laboratorio donde un estudio creativo y un estudio de tecnología se encuentran. Producimos imagen, video, branding, automatizaciones y productos digitales — todo en un solo equipo.">
+<meta property="og:title" content="LAB 080 — Studio & Systems · Estudio Nativo en IA">
+<meta property="og:description" content="Donde un estudio creativo y la tecnología se encuentran. Studio para lo visual. Systems para la operación digital.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://lab080.studio">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{
+  "@context":"https://schema.org",
+  "@type":"Organization",
+  "name":"LAB 080",
+  "description":"Estudio nativo en IA. Studio & Systems.",
+  "url":"https://lab080.studio",
+  "foundingDate":"2025",
+  "location":{
+    "@type":"Place",
+    "address":{
+      "@type":"PostalAddress",
+      "addressLocality":"Santiago",
+      "addressCountry":"CL"
+    }
+  }
+}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Chivo+Mono:wght@400;500;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/simplex-noise/2.4.0/simplex-noise.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:#0D0D0D;color:#fff;
+  font-family:'Instrument Sans',sans-serif;font-weight:400;
+  overflow-x:hidden;-webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+:root{
+  --red:#e13c26;
+  --dark:#0D0D0D;--dark2:#111;--dark3:#161616;
+  --border:#1E1E1E;--muted:#666;--white:#fff;
+}
+
+/* ── TOP BAR ── */
+.top-bar{
+  position:fixed;top:0;left:0;right:0;z-index:101;
+  background:#111111;padding:4px 24px;text-align:center;
+}
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:10px 24px;background:#111111;
+}
+.nav-logo{font-size:14px;font-weight:600;color:#fff}
+.nav-right{display:flex;align-items:center;gap:20px}
+.nav-link{font-size:13px;font-weight:500;color:rgba(255,255,255,.65);transition:color .2s}
+.nav-link:hover{color:#fff}
+.nav-cta{
+  font-size:12px;font-weight:600;letter-spacing:.3px;padding:8px 16px;
+  border:1px solid #e13c26;color:#e13c26;background:transparent;
+  transition:background .2s;
+}
+.nav-cta:hover{background:rgba(225,60,38,.12)}
+
+/* ── HERO ── */
+#hero{
+  min-height:100vh;background:#e13c26;position:relative;
+  display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;
+}
+.hero-content{
+  position:relative;z-index:2;padding:0 24px;padding-top:100px;flex:1;
+  display:flex;flex-direction:column;justify-content:center;
+}
+.hero-headline{
+  font-size:clamp(52px,7.5vw,110px);font-weight:700;line-height:.96;
+  letter-spacing:-2px;color:#111111;max-width:900px;margin-bottom:28px;
+}
+.hero-sub{
+  font-size:clamp(14px,1.2vw,17px);font-weight:400;color:rgba(0,0,0,.65);
+  max-width:400px;line-height:1.55;margin-bottom:36px;
+}
+.hero-ctas{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:80px}
+.btn-dark{
+  display:inline-flex;align-items:center;gap:8px;padding:12px 24px;
+  background:#111111;color:#fff;font-family:'Instrument Sans',sans-serif;
+  font-size:13px;font-weight:600;border:none;cursor:pointer;transition:opacity .2s;
+}
+.btn-dark:hover{opacity:.8}
+.btn-ghost{
+  display:inline-flex;align-items:center;gap:6px;padding:12px 0;
+  background:none;border:none;color:rgba(0,0,0,.6);
+  font-family:'Instrument Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:color .2s;
+}
+.btn-ghost:hover{color:#111111}
+.btn-ghost::after{content:'→';transition:transform .2s}
+.btn-ghost:hover::after{transform:translateX(3px)}
+.btn-reel{
+  display:inline-flex;align-items:center;gap:8px;padding:12px 20px;
+  background:transparent;border:1px solid rgba(0,0,0,.3);color:rgba(0,0,0,.7);
+  font-family:'Instrument Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;
+  transition:all .2s;text-decoration:none;
+}
+.btn-reel:hover{background:rgba(0,0,0,.08);border-color:rgba(0,0,0,.5);color:#111111}
+.btn-reel::before{content:'▶';font-size:10px}
+.hero-marquee-wrap{position:relative;z-index:5;background:#111111;border-top:1px solid rgba(225,60,38,.2);overflow:hidden;padding:12px 0}
+.hero-marquee{display:flex;gap:0;white-space:nowrap;animation:marquee 22s linear infinite}
+.hero-marquee-inner{display:flex;align-items:center;gap:0;flex-shrink:0}
+.marquee-item{
+  font-family:'Chivo Mono',monospace;font-size:11px;font-weight:500;
+  letter-spacing:1.5px;text-transform:uppercase;color:#e13c26;
+  padding:0 20px;display:flex;align-items:center;gap:20px;
+}
+.marquee-item::after{content:'·';color:rgba(225,60,38,.4)}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ── BRANDS ── */
+#brands{background:var(--dark);padding:120px 24px;border-top:1px solid var(--border)}
+.brands-headline{
+  font-size:clamp(40px,6vw,88px);font-weight:700;line-height:1.0;
+  letter-spacing:-2px;color:#fff;max-width:860px;margin:0 auto 80px;
+}
+.brands-list{max-width:1200px;margin:0 auto}
+.brand-row{
+  display:grid;grid-template-columns:64px 1fr 1fr;
+  align-items:center;gap:24px;
+  border-bottom:1px solid var(--border);
+  cursor:pointer;position:relative;
+  transition:background .2s;
+}
+.brand-row:first-child{border-top:1px solid var(--border)}
+.brand-row:hover{background:#e13c26}
+.brand-idx{
+  font-family:'Chivo Mono',monospace;font-size:10px;font-weight:400;
+  color:#2a2a2a;letter-spacing:2px;padding:22px 0;
+}
+.brand-row:hover .brand-idx,.brand-row.active .brand-idx{color:#111111}
+.brand-name{
+  font-size:clamp(15px,1.8vw,22px);font-weight:600;
+  color:rgba(255,255,255,.5);transition:color .2s;padding:22px 0;
+  letter-spacing:-.2px;
+}
+.brand-row:hover .brand-name,.brand-row.active .brand-name{color:#111111}
+.brand-cat{
+  font-size:13px;color:rgba(255,255,255,.18);transition:color .2s;
+  padding:22px 0;font-style:italic;
+}
+.brand-row:hover .brand-cat,.brand-row.active .brand-cat{color:rgba(0,0,0,.5)}
+
+/* brand expand */
+.brand-detail{
+  max-height:0;overflow:hidden;
+  transition:max-height .5s cubic-bezier(.16,1,.3,1);
+  border-bottom:1px solid var(--border);
+}
+.brand-detail.open{max-height:280px}
+.brand-detail-inner{
+  max-width:1200px;padding:28px 88px 36px;
+  display:grid;grid-template-columns:1fr;gap:40px;align-items:start;
+}
+.bdi-content{}
+.bdi-label{
+  font-family:'Chivo Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--red);margin-bottom:6px;
+}
+.bdi-title{font-size:18px;font-weight:700;color:#fff;letter-spacing:-.3px;margin-bottom:2px}
+.bdi-period{font-size:12px;color:var(--muted);margin-bottom:16px;font-style:italic}
+.bdi-bullets{display:flex;flex-direction:column;gap:8px}
+.bdi-bullet{
+  display:flex;gap:10px;font-size:12px;font-weight:400;
+  color:rgba(255,255,255,.4);line-height:1.6;
+}
+.bdi-bullet::before{content:'→';color:var(--red);font-size:10px;flex-shrink:0;margin-top:3px}
+
+/* ── PROBLEM ── */
+#problem{background:var(--dark);padding:120px 24px}
+.problem-headline{
+  font-size:clamp(40px,6vw,88px);font-weight:700;line-height:1.0;
+  letter-spacing:-2px;color:#fff;max-width:860px;margin:0 auto 80px;
+}
+.problem-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+  background:var(--border);max-width:1200px;margin:0 auto 100px;
+}
+.problem-card{background:var(--dark);padding:32px 28px}
+.problem-dot{width:6px;height:6px;border-radius:50%;background:var(--red);margin-bottom:20px}
+.problem-card-title{font-size:15px;font-weight:600;color:#fff;margin-bottom:12px;line-height:1.3}
+.problem-card-desc{font-size:13px;font-weight:400;color:var(--muted);line-height:1.65}
+.problem-bottom{max-width:1200px;margin:0 auto;padding-top:60px;border-top:1px solid var(--border)}
+.problem-cta-text{font-size:clamp(36px,5.5vw,80px);font-weight:700;letter-spacing:-2px;line-height:.96;color:#fff}
+.problem-cta-text .red{color:var(--red)}
+
+/* ── OFFLINE ── */
+#offline{background:var(--dark);padding:80px 24px 120px;border-top:1px solid var(--border)}
+.offline-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.machine-diagram{
+  background:var(--dark3);border:1px solid var(--border);border-radius:4px;
+  padding:32px;font-family:'Chivo Mono',monospace;position:relative;overflow:hidden;
+}
+.machine-diagram::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--red),transparent);
+}
+.diagram-title{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:24px}
+.diagram-node{
+  background:var(--dark2);border:1px solid var(--border);
+  padding:12px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px;
+}
+.diagram-node-dot{width:4px;height:4px;border-radius:50%;background:var(--red);flex-shrink:0}
+.diagram-node-text{font-size:11px;color:rgba(255,255,255,.5);letter-spacing:.3px}
+.diagram-node-tag{
+  margin-left:auto;font-size:9px;letter-spacing:1px;text-transform:uppercase;
+  color:var(--red);border:1px solid rgba(225,60,38,.25);padding:2px 7px;
+}
+.diagram-line{width:1px;height:20px;background:var(--border);margin-left:2px}
+.offline-right{}
+.offline-eyebrow{
+  font-family:'Chivo Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--red);margin-bottom:16px;
+}
+.offline-headline{font-size:clamp(36px,4vw,60px);font-weight:700;letter-spacing:-1.5px;color:#fff;line-height:.96;margin-bottom:20px}
+.offline-desc{font-size:15px;font-weight:400;color:var(--muted);line-height:1.65;max-width:380px;margin-bottom:56px}
+.offline-features{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-top:48px;max-width:1200px;margin-left:auto;margin-right:auto}
+.offline-feat{background:var(--dark);padding:24px 20px}
+.offline-feat-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:10px}
+.offline-feat-title{font-size:15px;font-weight:600;color:#fff;margin-bottom:8px;line-height:1.3}
+.offline-feat-desc{font-size:12px;color:var(--muted);line-height:1.6}
+
+/* ── SERVICES ── */
+#services{background:var(--dark);padding:120px 24px;border-top:1px solid var(--border)}
+.services-inner{max-width:1200px;margin:0 auto}
+.services-eyebrow{
+  font-family:'Chivo Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--red);margin-bottom:20px;display:flex;align-items:center;gap:10px;
+}
+.services-eyebrow::before{content:'';display:block;width:20px;height:1px;background:var(--red)}
+.services-headline{
+  font-size:clamp(40px,5.5vw,80px);font-weight:700;letter-spacing:-2px;line-height:.96;
+  color:#fff;max-width:700px;margin-bottom:16px;
+}
+.services-sub{font-size:15px;color:var(--muted);line-height:1.65;max-width:560px;margin-bottom:72px}
+
+/* accordion */
+.svc-list{border-top:1px solid var(--border)}
+.svc-item{border-bottom:1px solid var(--border);overflow:hidden;cursor:pointer;background:var(--dark)}
+.svc-row{
+  display:grid;grid-template-columns:64px 1fr 40px;
+  align-items:center;gap:24px;padding:24px 0;transition:padding .3s;
+}
+.svc-item.open .svc-row{padding-bottom:0}
+.svc-num{
+  font-family:'Chivo Mono',monospace;font-size:10px;font-weight:500;
+  color:#2a2a2a;letter-spacing:2px;
+}
+.svc-item.open .svc-num,.svc-item:hover .svc-num{color:var(--red)}
+.svc-name{
+  font-size:clamp(15px,2vw,24px);font-weight:600;color:rgba(255,255,255,.65);
+  letter-spacing:-.3px;transition:color .2s;
+}
+.svc-item:hover .svc-name,.svc-item.open .svc-name{color:#fff}
+.svc-arrow{
+  font-size:16px;color:#2a2a2a;text-align:right;
+  transition:transform .4s cubic-bezier(.16,1,.3,1),color .2s;
+}
+.svc-item:hover .svc-arrow,.svc-item.open .svc-arrow{color:var(--red)}
+.svc-item.open .svc-arrow{transform:rotate(90deg)}
+.svc-body{max-height:0;overflow:hidden;transition:max-height .5s cubic-bezier(.16,1,.3,1);padding-left:88px}
+.svc-item.open .svc-body{max-height:300px}
+.svc-body-inner{padding:20px 0 32px}
+.svc-body-inner p{font-size:13px;font-weight:400;line-height:1.85;color:var(--muted);max-width:600px;margin-bottom:16px}
+.svc-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.svc-tag{
+  font-family:'Chivo Mono',monospace;font-size:9px;font-weight:400;letter-spacing:2px;text-transform:uppercase;
+  border:1px solid var(--border);color:#3a3a3a;padding:5px 12px;
+  transition:border-color .2s,color .2s;
+}
+.svc-tag:hover{border-color:var(--red);color:var(--red)}
+
+/* ── PRIVATE ── */
+#private{background:var(--dark);padding:120px 24px;border-top:1px solid var(--border)}
+.private-inner{max-width:1200px;margin:0 auto}
+.private-eyebrow{
+  font-family:'Chivo Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--red);margin-bottom:20px;display:flex;align-items:center;gap:10px;
+}
+.private-eyebrow::before{content:'';display:block;width:20px;height:1px;background:var(--red)}
+.private-headline{
+  font-size:clamp(40px,5.5vw,80px);font-weight:700;letter-spacing:-2px;line-height:.96;
+  color:#fff;max-width:700px;margin-bottom:80px;
+}
+.private-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
+.private-card{background:var(--dark);padding:40px 32px;position:relative;overflow:hidden}
+.private-card::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,var(--red),transparent);opacity:0;transition:opacity .3s;
+}
+.private-card:hover::after{opacity:1}
+.private-card-num{
+  font-family:'Chivo Mono',monospace;font-size:10px;letter-spacing:2px;
+  color:rgba(225,60,38,.5);margin-bottom:24px;
+}
+.private-card-title{font-size:20px;font-weight:700;color:#fff;line-height:1.1;letter-spacing:-.5px;margin-bottom:12px}
+.private-card-desc{font-size:13px;color:var(--muted);line-height:1.65}
+
+/* ── CTA ── */
+#cta{background:var(--red);padding:100px 24px;text-align:center;position:relative;overflow:hidden}
+#cta::before{
+  content:'080';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-family:'Chivo Mono',monospace;font-size:clamp(120px,25vw,320px);font-weight:800;
+  color:rgba(0,0,0,.1);letter-spacing:-8px;pointer-events:none;
+}
+.cta-eyebrow{font-family:'Chivo Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(0,0,0,.5);margin-bottom:20px;position:relative;z-index:2}
+.cta-headline{font-size:clamp(44px,6.5vw,96px);font-weight:700;letter-spacing:-2.5px;line-height:.92;color:#111111;max-width:760px;margin:0 auto 36px;position:relative;z-index:2}
+.cta-sub{font-size:16px;color:rgba(0,0,0,.55);max-width:440px;margin:0 auto 40px;line-height:1.55;position:relative;z-index:2}
+.cta-form{display:flex;align-items:center;gap:0;max-width:420px;margin:0 auto;position:relative;z-index:2}
+.cta-input{flex:1;padding:14px 18px;background:rgba(0,0,0,.15);border:1px solid rgba(0,0,0,.25);border-right:none;color:#111111;font-family:'Instrument Sans',sans-serif;font-size:14px;outline:none}
+.cta-input::placeholder{color:rgba(0,0,0,.4)}
+.cta-input:focus{border-color:rgba(0,0,0,.5);background:rgba(0,0,0,.2)}
+.cta-btn{padding:14px 22px;background:#111111;color:#fff;font-family:'Instrument Sans',sans-serif;font-size:13px;font-weight:600;border:none;cursor:pointer;white-space:nowrap;transition:opacity .2s}
+.cta-btn:hover{opacity:.8}
+
+/* ── FAQ ── */
+#faq{background:var(--dark);padding:100px 24px;border-top:1px solid var(--border)}
+.faq-inner{max-width:800px;margin:0 auto}
+.faq-eyebrow{
+  font-family:'Chivo Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--red);margin-bottom:16px;display:flex;align-items:center;gap:10px;
+}
+.faq-eyebrow::before{content:'';display:block;width:20px;height:1px;background:var(--red)}
+.faq-headline{
+  font-size:clamp(36px,4.5vw,64px);font-weight:700;letter-spacing:-1.5px;
+  color:#fff;line-height:.96;max-width:600px;margin-bottom:56px;
+}
+.faq-list{border-top:1px solid var(--border)}
+.faq-item{border-bottom:1px solid var(--border);padding:20px 0;cursor:pointer;background:var(--dark)}
+.faq-q{
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:15px;font-weight:600;color:rgba(255,255,255,.7);transition:color .2s;
+}
+.faq-item.open .faq-q,.faq-item:hover .faq-q{color:#fff}
+.faq-arrow{font-size:14px;color:#2a2a2a;transition:transform .3s,color .2s}
+.faq-item.open .faq-arrow{transform:rotate(90deg);color:var(--red)}
+.faq-a{
+  max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.16,1,.3,1),padding .3s;
+  font-size:13px;color:var(--muted);line-height:1.7;padding:0 40px 0 0;
+}
+.faq-item.open .faq-a{max-height:200px;padding-top:14px}
+
+/* ── FOOTER ── */
+footer{background:#0a0a0a;border-top:1px solid var(--border)}
+.footer-card{max-width:1200px;margin:0 auto;padding:60px 24px 40px}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px}
+@media(max-width:768px){.footer-grid{grid-template-columns:1fr 1fr;gap:32px}}
+@media(max-width:480px){.footer-grid{grid-template-columns:1fr;gap:28px}}
+.footer-brand{}
+.footer-brand-name{font-size:20px;font-weight:700;color:#fff;margin-bottom:16px;display:block}
+.footer-desc{font-size:13px;color:var(--muted);line-height:1.65;max-width:280px;margin-bottom:20px}
+.footer-social{display:flex;gap:10px}
+.footer-social a{
+  width:34px;height:34px;border-radius:50%;border:1px solid #2a2a2a;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--muted);transition:all .3s;font-size:14px;
+}
+.footer-social a:hover{background:var(--red);border-color:var(--red);color:#fff}
+.footer-col-title{
+  font-family:'Chivo Mono',monospace;font-size:9px;letter-spacing:2px;
+  text-transform:uppercase;color:var(--red);margin-bottom:16px;
+}
+.footer-col{display:flex;flex-direction:column;gap:10px}
+.footer-col a{font-size:13px;color:var(--muted);transition:color .2s}
+.footer-col a:hover{color:#fff}
+.footer-bottom{border-top:1px solid var(--border);padding:20px 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.footer-bottom-text{font-size:11px;color:var(--muted)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1000px){
+  .brand-row{grid-template-columns:48px 1fr}
+  .brand-cat{display:none}
+  .brand-detail-inner{padding:24px 48px 32px}
+}
+@media(max-width:900px){
+  .problem-grid{grid-template-columns:repeat(2,1fr)}
+  .offline-inner{grid-template-columns:1fr;gap:48px}
+  .private-grid{grid-template-columns:1fr}
+  .offline-features{grid-template-columns:1fr}
+  nav{padding:14px 20px}
+}
+@media(max-width:600px){
+  .problem-grid{grid-template-columns:1fr}
+  .hero-headline{font-size:44px;letter-spacing:-1px}
+  .hero-ctas{flex-direction:column;align-items:flex-start}
+  footer{flex-direction:column;align-items:flex-start;gap:20px}
+  .footer-links{flex-wrap:wrap;gap:16px}
+  .brand-row{grid-template-columns:36px 1fr}
+  .brand-detail-inner{padding:20px 24px 28px}
+  .svc-body{padding-left:40px}
+}
+
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+.reveal.on{opacity:1;transform:none}
+.d1{transition-delay:.1s}.d2{transition-delay:.18s}.d3{transition-delay:.26s}.d4{transition-delay:.34s}
+
+/* ── SECTION VIDEO BACKGROUNDS ── */
+.section-bg-video{
+  position:absolute;inset:0;overflow:hidden;z-index:0;
+}
+.section-bg-video video{
+  width:100%;height:100%;object-fit:cover;
+  aspect-ratio:16/9;
+  filter:brightness(.3) saturate(.5);
+}
+.section-bg-content{
+  position:relative;z-index:1;
+}
+#problem > :not(.section-bg-video),
+#offline > :not(.section-bg-video),
+#services > :not(.section-bg-video),
+#faq > :not(.section-bg-video){
+  position:relative;z-index:1;
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-logo"><a href="#hero" style="color:#fff;text-decoration:none">LAB 080</a></div>
+  <div class="nav-right">
+    <a href="#services" class="nav-link">Servicios</a>
+    <a href="#brands" class="nav-link">Marcas</a>
+    <a href="#cta" class="nav-cta">Hablemos</a>
+    <span class="nav-link lang-toggle" style="cursor:pointer;font-weight:600;color:rgba(255,255,255,.9)">ES / EN</span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div id="waves-bg" style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:hidden;pointer-events:none;--x:-0.5rem;--y:50%;z-index:1"></div>
+  <div class="hero-content">
+    <h1 class="hero-headline" data-scramble>
+      Diseño + tecnología.<br>
+      Un solo equipo.
+    </h1>
+    <p class="hero-sub">
+      Donde un estudio creativo y uno de tecnología trabajan juntos. Producimos imagen, video, branding, automatizaciones y plataformas digitales — todo con un solo equipo.
+    </p>
+    <div class="hero-ctas">
+      <a href="#cta" class="btn-dark">Iniciar Proyecto</a>
+      <a href="#brands" class="btn-ghost">Ver Marcas</a>
+      <a href="https://vimeo.com/1161211333" target="_blank" rel="noopener" class="btn-reel">VER REEL</a>
+    </div>
+  </div>
+  <div class="hero-marquee-wrap">
+    <div class="hero-marquee">
+      <div class="hero-marquee-inner">
+        <span class="marquee-item">STUDIO Visual</span>
+        <span class="marquee-item">Imagen IA</span>
+        <span class="marquee-item">Video IA</span>
+        <span class="marquee-item">Prompt Engineering Avanzado</span>
+        <span class="marquee-item">SYSTEMS</span>
+        <span class="marquee-item">Automatizaciones</span>
+        <span class="marquee-item">Web & Funnels</span>
+        <span class="marquee-item">15+ años</span>
+        <span class="marquee-item">20+ marcas globales</span>
+        <span class="marquee-item">Zero Logistics</span>
+      </div>
+      <div class="hero-marquee-inner" aria-hidden="true">
+        <span class="marquee-item">STUDIO Visual</span>
+        <span class="marquee-item">Imagen IA</span>
+        <span class="marquee-item">Video IA</span>
+        <span class="marquee-item">Prompt Engineering Avanzado</span>
+        <span class="marquee-item">SYSTEMS</span>
+        <span class="marquee-item">Automatizaciones</span>
+        <span class="marquee-item">Web & Funnels</span>
+        <span class="marquee-item">15+ años</span>
+        <span class="marquee-item">20+ marcas globales</span>
+        <span class="marquee-item">Zero Logistics</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BRANDS -->
+<section id="brands">
+  <p class="brands-headline reveal" data-scramble>
+    Marcas.<br>
+    Chile & global.
+  </p>
+  <div class="brands-list">
+
+    <div class="brand-row reveal" onclick="toggleBrand(this,'01')">
+      <span class="brand-idx">01</span>
+      <span class="brand-name">Concha y Toro</span>
+      <span class="brand-cat">Vitivinícola Global</span>
+    </div>
+    <div class="brand-detail" id="bd-01">
+      <div class="brand-detail-inner">
+        <div class="bdi-content">
+          <div class="bdi-label">01 — Vitivinícola Global</div>
+          <div class="bdi-title">Concha y Toro</div>
+          <div class="bdi-period">Santiago, Chile · 2018–2025</div>
+          <div class="bdi-bullets">
+            <div class="bdi-bullet">Brandkeeper del holding — guardia de brand guidelines para todo el portfolio de marcas del grupo.</div>
+            <div class="bdi-bullet">Dirección creativa de campañas anuales y materiales de exportación para mercados US, Europa y Asia.</div>
+            <div class="bdi-bullet">Coordinación de agencias internacionales de diseño y producción creativa.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="brand-row reveal d1" onclick="toggleBrand(this,'02')">
+      <span class="brand-idx">02</span>
+      <span class="brand-name">Casillero del Diablo</span>
+      <span class="brand-cat">Vino Premium Global</span>
+    </div>
+    <div class="brand-detail" id="bd-02">
+      <div class="brand-detail-inner">
+        <div class="bdi-content">
+          <div class="bdi-label">02 — Vino Premium Global</div>
+          <div class="bdi-title">Casillero del Diablo</div>
+          <div class="bdi-period">Mercados globales · 2018–2025</div>
+          <div class="bdi-bullets">
+            <div class="bdi-bullet">Brandkeeper oficial — responsable de la identidad visual en todos los mercados y touchpoints globales.</div>
+            <div class="bdi-bullet">Dirección del rediseño integral de packaging para líneas Reserva, Winemaker y Devil's Collection.</div>
+            <div class="bdi-bullet">Campañas 360° para lanzamientos en Europa, Asia y Latinoamérica con producción audiovisual IA.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="brand-row reveal d2" onclick="toggleBrand(this,'03')">
+      <span class="brand-idx">03</span>
+      <span class="brand-name">Don Melchor</span>
+      <span class="brand-cat">Vino Ícono de Chile</span>
+    </div>
+    <div class="brand-detail" id="bd-03">
+      <div class="brand-detail-inner">
+        <div class="bdi-content">
+          <div class="bdi-label">03 — Vino Ícono de Chile</div>
+          <div class="bdi-title">Don Melchor</div>
+          <div class="bdi-period">Ultra-premium · 2018–2025</div>
+          <div class="bdi-bullets">
+            <div class="bdi-bullet">Brandkeeper del vino ícono chileno — control estricto de identidad y tono premium en todas las piezas.</div>
+            <div class="bdi-bullet">Dirección de ediciones coleccionables y materiales ultra-premium para coleccionistas globales.</div>
+            <div class="bdi-bullet">Producción de contenido editorial para Wine Spectator y medios especializados internacionales.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="brand-row reveal d3" onclick="toggleBrand(this,'04')">
+      <span class="brand-idx">04</span>
+      <span class="brand-name">Marqués de Casa Concha</span>
+      <span class="brand-cat">Vinos Premium</span>
+    </div>
+    <div class="brand-detail" id="bd-04">
+      <div class="brand-detail-inner">
+        <div class="bdi-content">
+          <div class="bdi-label">04 — Vinos Premium</div>
+          <div class="bdi-title">Marqués de Casa Concha</div>
+          <div class="bdi-period">Relanzamiento · 2020</div>
+          <div class="bdi-bullets">
+            <div class="bdi-bullet">Rediseño de etiqueta y packaging para el relanzamiento de la línea en mercados internacionales.</div>
+            <div class="bdi-bullet">Campaña de relanzamiento con storytelling visual basado en la herencia vitícola del valle.</div>
+            <div class="bdi-bullet">Materiales de presentación para sommeliers, importadores y medios especializados.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="brand-row reveal" onclick="toggleBrand(this,'05')">
+      <span class="brand-idx">05</span>
+      <span class="brand-name">Cono Sur</span>
+      <span class="brand-cat">Vinos Sustentables</span>
+    </div>
+    <div class="brand-detail" id="bd-05">
+      <div class="brand-detail-inner">
+        <div class="bdi-content">
+          <div class="bdi-label">05 — Vinos Sustentables</div>
+          <div class="bdi-title">Cono Sur</div>
+          <div class="bdi-period">Europa · 2018–2025</div>
+          <div class="bdi-bullets">
+            <div class="bdi-bullet">Identidad y packaging para la línea icónica Bicicleta — uno de los vinos más vendidos en Europa.</div>
+            <div class="bdi-bullet">Campañas de sustentabilidad y comunicación eco-friendly para mercados nórdicos y UK.</div>
+            <div class="bdi-bullet">Materiales de punto de venta para distribuidores en más de 20 países.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="brand-row reveal d1" onclick="toggleBrand(this,'06')">
+      <span class="brand-idx">06</span>
+      <span class="brand-name">Carozzi</span>
+      <span class="brand-cat">Alimentos</span>
+    </div>
+    <div class="brand-detail" id="bd-06">
+      <div class="brand-detail-inner">
+        <div class="bdi-content">
+          <div class="bdi-label">06 — Alimentos</div>
+          <div class="bdi-title">Carozzi</div>
+          <div class="bdi-period">Chile · Campañas estacionales</div>
+          <div class="bdi-bullets">
+            <div class="bdi-bullet">Campañas estacionales para líneas pasta, arroz y productos de cocina con foco en retail masivo.</div>
+            <div class="bdi-bullet">Rediseño de packaging para línea gourmet con foco en retail premium.</div>
+            <div class="bdi-bullet">Piezas de comunicación para supermercados y catálogos de retail.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="brand-row reveal d2" onclick="toggleBrand(this,'07')">
+      <span class="brand-idx">07</span>
+      <span class="brand-name">Ambrosoli</span>
+      <span class="brand-cat">Confitería</span>
+    </div>
+    <div class="brand-detail" id="bd-07">
+      <div class="brand-detail-inner">
+        <div class="bdi-content">
+          <div class="bdi-label">07 — Confitería</div>
+          <div class="bdi-title">Ambrosoli</div>
+          <div class="bdi-period">Chile · Branding & Packaging</div>
+          <div class="bdi-bullets">
+            <div class="bdi-bullet">Rediseño de packaging para múltiples líneas de confitería manteniendo la esencia nostálgica de la marca.</div>
+            <div class="bdi-bullet">Actualización de identidad con enfoque en segmento joven sin perder consumidores históricos.</div>
+            <div class="bdi-bullet">Campañas de temporada navideña y ediciones limitadas para fechas especiales.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="brand-row reveal d3" onclick="toggleBrand(this,'08')">
+      <span class="brand-idx">08</span>
+      <span class="brand-name">Costa</span>
+      <span class="brand-cat">Snacks & Galletas</span>
+    </div>
+    <div class="brand-detail" id="bd-08">
+      <div class="brand-detail-inner">
+        <div class="bdi-content">
+          <div class="bdi-label">08 — Snacks & Galletas</div>
+          <div class="bdi-title">Costa</div>
+          <div class="bdi-period">Chile · POP & Campañas</div>
+          <div class="bdi-bullets">
+            <div class="bdi-bullet">Diseño de piezas para punto de venta masivo — exhibidores, stoppers y cenefas para supermercados.</div>
+            <div class="bdi-bullet">Campañas de temporada escolar y vacaciones con foco en el segmento infantil y familias.</div>
+            <div class="bdi-bullet">Materiales para activaciones en terreno y eventos de marketing experiencial.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="brand-row reveal" onclick="toggleBrand(this,'09')">
+      <span class="brand-idx">09</span>
+      <span class="brand-name">Jumbo</span>
+      <span class="brand-cat">Retail Supermercados</span>
+    </div>
+    <div class="brand-detail" id="bd-09">
+      <div class="brand-detail-inner">
+        <div class="bdi-content">
+          <div class="bdi-label">09 — Retail Supermercados</div>
+          <div class="bdi-title">Jumbo</div>
+          <div class="bdi-period">Chile · 2012–2015</div>
+          <div class="bdi-bullets">
+            <div class="bdi-bullet">Dirección creativa de campañas de temporada — Navidad, Año Nuevo, Día de la Madre, Fiestas Patrias.</div>
+            <div class="bdi-bullet">Catálogos impresos y digitales semanales con coordinación de shooting de producto.</div>
+            <div class="bdi-bullet">Identidad visual de espacios del mall Costanera Center y señalética de tienda.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="brand-row reveal d1" onclick="toggleBrand(this,'10')">
+      <span class="brand-idx">10</span>
+      <span class="brand-name">Paris</span>
+      <span class="brand-cat">Retail & Moda</span>
+    </div>
+    <div class="brand-detail" id="bd-10">
+      <div class="brand-detail-inner">
+        <div class="bdi-content">
+          <div class="bdi-label">10 — Retail & Moda</div>
+          <div class="bdi-title">Paris</div>
+          <div class="bdi-period">Chile · 2012–2015</div>
+          <div class="bdi-bullets">
+            <div class="bdi-bullet">Identidad visual y campañas de moda para retail — lookbooks, catálogos y piezas de temporada.</div>
+            <div class="bdi-bullet">Dirección de arte para campañas de lanzamiento de colecciones y eventos de moda.</div>
+            <div class="bdi-bullet">Comunicación de marca en RRSS, email marketing y piezas digitales para e-commerce.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="brand-row reveal d2" onclick="toggleBrand(this,'11')">
+      <span class="brand-idx">11</span>
+      <span class="brand-name">Cencosud</span>
+      <span class="brand-cat">Holding Retail</span>
+    </div>
+    <div class="brand-detail" id="bd-11">
+      <div class="brand-detail-inner">
+        <div class="bdi-content">
+          <div class="bdi-label">11 — Holding Retail</div>
+          <div class="bdi-title">Cencosud</div>
+          <div class="bdi-period">Chile · Identidad corporativa</div>
+          <div class="bdi-bullets">
+            <div class="bdi-bullet">Lineamientos de marca corporativa y estandarización visual del holding — Jumbo, Paris, Easy, Santa Isabel.</div>
+            <div class="bdi-bullet">Desarrollo de manual de identidad corporativa para aplicación transversal en múltiples formatos.</div>
+            <div class="bdi-bullet">Comunicación institucional para reportes anuales y presentaciones a directorio e inversores.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="brand-row reveal d3" onclick="toggleBrand(this,'12')">
+      <span class="brand-idx">12</span>
+      <span class="brand-name">Mastercat</span>
+      <span class="brand-cat">Tecnología</span>
+    </div>
+    <div class="brand-detail" id="bd-12">
+      <div class="brand-detail-inner">
+        <div class="bdi-content">
+          <div class="bdi-label">12 — Tecnología</div>
+          <div class="bdi-title">Mastercat</div>
+          <div class="bdi-period">Chile · Identidad & Web</div>
+          <div class="bdi-bullets">
+            <div class="bdi-bullet">Creación de identidad de marca desde cero — naming, logotipo, sistema visual y tono de comunicación.</div>
+            <div class="bdi-bullet">Diseño y desarrollo de sitio web corporativo con foco en conversión y posicionamiento B2B.</div>
+            <div class="bdi-bullet">Materiales de presentación comercial, pitch deck y kit de ventas para equipos comerciales.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section id="problem" style="position:relative">
+  <div class="section-bg-video"><video src="file:///Users/giopandolffo/Desktop/LAB080-BRAND/hf_20260117_214118_cafbd2cf-7111-404b-8fa9-ab9dfae17744.mp4" autoplay muted loop playsinline></video></div>
+  <p class="problem-headline reveal" data-scramble>
+    Producir bien siempre ha sido caro,<br>
+    lento y reservado para pocos.
+  </p>
+  <div class="problem-grid">
+    <div class="problem-card reveal">
+      <div class="problem-dot"></div>
+      <h3 class="problem-card-title">El costo de producir bien.</h3>
+      <p class="problem-card-desc">Shooting, agencia, retocadores. Una producción de 30 segundos puede costar lo que una pyme factura en un mes. Eso se acabó.</p>
+    </div>
+    <div class="problem-card reveal d1">
+      <div class="problem-dot"></div>
+      <h3 class="problem-card-title">Operar sin sistemas.</h3>
+      <p class="problem-card-desc">Tareas repetitivas, aprobaciones lentas, herramientas que no conversan. El tiempo se pierde en lo que no suma.</p>
+    </div>
+    <div class="problem-card reveal d2">
+      <div class="problem-dot"></div>
+      <h3 class="problem-card-title">Competir sin ventaja.</h3>
+      <p class="problem-card-desc">Marcas grandes tienen equipos enormes. Sin IA como ventaja estructural, el campo nunca es parejo.</p>
+    </div>
+    <div class="problem-card reveal d3">
+      <div class="problem-dot"></div>
+      <h3 class="problem-card-title">Herramientas reservadas.</h3>
+      <p class="problem-card-desc">Las herramientas que realmente funcionan estaban reservadas para quienes podían pagarlas. Hasta ahora.</p>
+    </div>
+  </div>
+  <div class="problem-bottom reveal">
+    <p class="problem-cta-text">
+      Todo lo anterior se resuelve<br>
+      <span class="red">con un solo cambio.</span>
+    </p>
+  </div>
+</section>
+
+<!-- WORK OFFLINE — Zero Logistics -->
+<section id="offline" style="position:relative">
+  <div class="section-bg-video"><video src="file:///Users/giopandolffo/Desktop/LAB080-BRAND/hf_20260128_185004_0f1d40ae-cfbb-474e-b42d-24c60fc22171.mp4" autoplay muted loop playsinline></video></div>
+  <div class="offline-inner">
+    <div class="machine-diagram reveal">
+      <div class="diagram-title">// Cómo entregamos</div>
+      <div class="diagram-node">
+        <div class="diagram-node-dot"></div>
+        <span class="diagram-node-text">Brief & Estrategia de Negocio</span>
+        <span class="diagram-node-tag">Día 1</span>
+      </div>
+      <div class="diagram-line" style="margin-left:20px"></div>
+      <div class="diagram-node">
+        <div class="diagram-node-dot"></div>
+        <span class="diagram-node-text">IA Generativa — Imagen, Video, Copy</span>
+        <span class="diagram-node-tag">STUDIO</span>
+      </div>
+      <div class="diagram-line" style="margin-left:20px"></div>
+      <div class="diagram-node">
+        <div class="diagram-node-dot"></div>
+        <span class="diagram-node-text">Código · Automatizaciones · Funnels</span>
+        <span class="diagram-node-tag">SYSTEMS</span>
+      </div>
+      <div class="diagram-line" style="margin-left:20px"></div>
+      <div class="diagram-node" style="border-color:rgba(225,60,38,.3);background:rgba(225,60,38,.05)">
+        <div class="diagram-node-dot" style="background:#fff"></div>
+        <span class="diagram-node-text" style="color:rgba(255,255,255,.8)">Entrega + Deploy + Medición</span>
+        <span class="diagram-node-tag" style="color:rgba(255,255,255,.5);border-color:rgba(255,255,255,.15)">En días</span>
+      </div>
+      <div style="margin-top:20px;padding-top:16px;border-top:1px solid #1a1a1a;display:flex;align-items:center;gap:6px">
+        <div style="width:5px;height:5px;border-radius:50%;background:#22c55e;box-shadow:0 0 8px #22c55e66"></div>
+        <span style="font-family:'Chivo Mono',monospace;font-size:10px;color:#22c55e;letter-spacing:1px">SIN INTERMEDIARIOS · ZERO LOGISTICS</span>
+      </div>
+    </div>
+    <div class="offline-right">
+      <div class="offline-eyebrow">// Cómo lo resolvemos</div>
+      <h2 class="offline-headline reveal" data-scramble>De la idea al deploy.<br>Sin los pasos que sobran.</h2>
+      <p class="offline-desc reveal d1">No adaptamos procesos de agencia a IA. Construimos flujos nuevos desde cero con IA en el centro. Eso cambia la velocidad, el costo y la calidad de todo.</p>
+    </div>
+  </div>
+  <div class="offline-features">
+    <div class="offline-feat reveal">
+      <div class="offline-feat-label">// Sin Intermediarios</div>
+      <h3 class="offline-feat-title">Un equipo. Un costo.</h3>
+      <p class="offline-feat-desc">Sin agencia, sin estudio externo, sin desarrollador aparte. Todo lo que necesitas en un mismo lugar, con un solo presupuesto.</p>
+    </div>
+    <div class="offline-feat reveal d1">
+      <div class="offline-feat-label">// Automatización Real</div>
+      <h3 class="offline-feat-title">Sistemas que trabajan por ti.</h3>
+      <p class="offline-feat-desc">Automatizaciones, pipelines y flujos que reemplazan tareas repetitivas. El tiempo que perdías en lo operativo ahora se va a lo que importa.</p>
+    </div>
+    <div class="offline-feat reveal d2">
+      <div class="offline-feat-label">// Ventaja Combinada</div>
+      <h3 class="offline-feat-title">Studio + Systems. En un solo equipo.</h3>
+      <p class="offline-feat-desc">No eliges entre calidad visual y eficiencia técnica. Tienes ambas con el mismo estándar de marca global.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services" style="position:relative">
+  <div class="section-bg-video"><video src="file:///Users/giopandolffo/Desktop/LAB080-BRAND/hf_20260129_053009_1e612e18-b914-47d8-81da-35550747c686.mp4" autoplay muted loop playsinline></video></div>
+  <div class="services-inner">
+    <div class="services-eyebrow">Studio · Systems</div>
+    <h2 class="services-headline reveal" data-scramble>Studio & Systems.<br>Un solo laboratorio.</h2>
+    <p class="services-sub reveal d1">STUDIO existe para lo que se ve. SYSTEMS existe para lo que funciona. Juntos cierran el espacio que la mayoría de los estudios deja abierto entre la creatividad y la tecnología.</p>
+
+    <div class="svc-list">
+      <div class="svc-item">
+        <div class="svc-row" onclick="toggleSvc(this)">
+          <span class="svc-num">01</span>
+          <span class="svc-name">Vibe Coding & Desarrollo Web</span>
+          <span class="svc-arrow">↘</span>
+        </div>
+        <div class="svc-body"><div class="svc-body-inner">
+          <p>Creamos, modificamos y escalamos código con inteligencia artificial. Landing pages, sitios web, dashboards y prototipos funcionales — desde el concepto hasta el deploy, sin depender de equipos externos ni esperar sprints infinitos.</p>
+          <div class="svc-tags">
+            <span class="svc-tag">Claude Code</span><span class="svc-tag">Cursor</span>
+            <span class="svc-tag">Lovable</span><span class="svc-tag">Bolt</span><span class="svc-tag">v0</span>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="svc-item">
+        <div class="svc-row" onclick="toggleSvc(this)">
+          <span class="svc-num">02</span>
+          <span class="svc-name">IA Generativa — Imagen, Video & Audio</span>
+          <span class="svc-arrow">↘</span>
+        </div>
+        <div class="svc-body"><div class="svc-body-inner">
+          <p>Producimos imagen, video y audio con IA a nivel profesional. Campañas, contenido editorial, motion graphics y post producción — todo generado, editado y exportado desde un mismo flujo de trabajo, sin estudios externos.</p>
+          <div class="svc-tags">
+            <span class="svc-tag">Midjourney</span><span class="svc-tag">Runway</span>
+            <span class="svc-tag">Kling</span><span class="svc-tag">ElevenLabs</span><span class="svc-tag">Suno</span>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="svc-item">
+        <div class="svc-row" onclick="toggleSvc(this)">
+          <span class="svc-num">03</span>
+          <span class="svc-name">Prompt Engineering Avanzado</span>
+          <span class="svc-arrow">↘</span>
+        </div>
+        <div class="svc-body"><div class="svc-body-inner">
+          <p>Diseñamos y optimizamos prompts para producir resultados consistentes, escalables y con identidad de marca. Sistemas de prompts, chaining, personas sintéticas y automatización de flujos de generación — el arte y la ciencia de hablar con modelos.</p>
+          <div class="svc-tags">
+            <span class="svc-tag">Chain Prompting</span><span class="svc-tag">Few-Shot</span>
+            <span class="svc-tag">Personas Sintéticas</span><span class="svc-tag">Workflows IA</span><span class="svc-tag">APIs</span>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="svc-item">
+        <div class="svc-row" onclick="toggleSvc(this)">
+          <span class="svc-num">04</span>
+          <span class="svc-name">Automatización de Flujos Creativos</span>
+          <span class="svc-arrow">↘</span>
+        </div>
+        <div class="svc-body"><div class="svc-body-inner">
+          <p>Conectamos herramientas, modelos y APIs para que los procesos creativos sucedan solos. Generación de assets en batch, pipelines de contenido, publicación automatizada y notificaciones inteligentes — tiempo recuperado para lo que sí requiere criterio.</p>
+          <div class="svc-tags">
+            <span class="svc-tag">n8n</span><span class="svc-tag">Make</span>
+            <span class="svc-tag">Zapier</span><span class="svc-tag">Python</span><span class="svc-tag">APIs</span>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="svc-item">
+        <div class="svc-row" onclick="toggleSvc(this)">
+          <span class="svc-num">05</span>
+          <span class="svc-name">Dirección Creativa Senior</span>
+          <span class="svc-arrow">↘</span>
+        </div>
+        <div class="svc-body"><div class="svc-body-inner">
+          <p>Dirección creativa con 15 años de experiencia en marcas globales. Estrategia visual, art direction, brand guidelines y supervisión de producción IA. El criterio que separa un resultado profesional de uno que parece hecho con IA.</p>
+          <div class="svc-tags">
+            <span class="svc-tag">Estrategia Visual</span><span class="svc-tag">Art Direction</span>
+            <span class="svc-tag">Brand Guidelines</span><span class="svc-tag">Campañas</span><span class="svc-tag">Producción IA</span>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="svc-item">
+        <div class="svc-row" onclick="toggleSvc(this)">
+          <span class="svc-num">06</span>
+          <span class="svc-name">UX/UI Funcional</span>
+          <span class="svc-arrow">↘</span>
+        </div>
+        <div class="svc-body"><div class="svc-body-inner">
+          <p>Diseñamos interfaces que funcionan y se ven espectaculares. UX research, prototipado, diseño de interacción y desarrollo front-end. Todo en el mismo proceso, sin vueltas eternas entre diseño y desarrollo.</p>
+          <div class="svc-tags">
+            <span class="svc-tag">Figma</span><span class="svc-tag">Prototipado</span>
+            <span class="svc-tag">Design Systems</span><span class="svc-tag">UX Research</span><span class="svc-tag">Front-end</span>
+          </div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRIVATE BY DEFAULT -->
+<section id="private">
+  <div class="private-inner">
+    <div class="private-eyebrow">Por qué LAB 080</div>
+    <h2 class="private-headline reveal" data-scramble>
+      Un laboratorio,<br>dos disciplinas.
+    </h2>
+    <div class="private-grid">
+      <div class="private-card reveal">
+        <div class="private-card-num">15+</div>
+        <h3 class="private-card-title">15 años decidiendo lo que sale al mundo.</h3>
+        <p class="private-card-desc">Director de Diseño Senior en una de las bodegas más grandes del mundo. Brandkeeper de Casillero del Diablo, Don Melchor. Implementamos IA generativa en el holding antes de que existiera la palabra "prompt".</p>
+      </div>
+      <div class="private-card reveal d1">
+        <div class="private-card-num">60%</div>
+        <h3 class="private-card-title">60% menos tiempo en concepting.</h3>
+        <p class="private-card-desc">No porque seamos más rápidos. Porque la IA nos deja iterar donde antes nos demorábamos. Ese tiempo se va a lo que realmente importa.</p>
+      </div>
+      <div class="private-card reveal d2">
+        <div class="private-card-num">20+</div>
+        <h3 class="private-card-title">20+ marcas, de vinos íconos a retail masivo.</h3>
+        <p class="private-card-desc">Desde Concha y Toro hasta Jumbo. Sabemos lo que funciona en cada categoría. Y lo construimos en el mismo laboratorio.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" style="position:relative">
+  <div class="section-bg-video"><video src="file:///Users/giopandolffo/Desktop/LAB080-BRAND/hf_20260129_130125_a55fb98f-717f-4003-a5e3-28331fde2284.mp4" autoplay muted loop playsinline></video></div>
+  <div class="faq-inner">
+    <div class="faq-eyebrow">FAQ</div>
+    <h2 class="faq-headline reveal" data-scramble>Preguntas<br>frecuentes.</h2>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span>¿Esto es para mi marca?</span>
+          <span class="faq-arrow">↘</span>
+        </div>
+        <div class="faq-a">LAB 080 es para marcas, startups, pymes y equipos internos que necesitan producción visual y operación digital sin los costos ni la logística de una agencia tradicional. No necesitas conocimiento previo de IA.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span>¿Cómo funcionan los tiempos de entrega?</span>
+          <span class="faq-arrow">↘</span>
+        </div>
+        <div class="faq-a">Depende del servicio, pero siempre damos una estimación antes de empezar. Contenido visual IA puede estar listo en 72h. Proyectos más complejos como automatizaciones o desarrollo web se entregan en días, no semanas.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span>¿Ofrecen demo o prueba gratuita?</span>
+          <span class="faq-arrow">↘</span>
+        </div>
+        <div class="faq-a">Sí. Cuéntanos qué necesitas y preparamos una demo personalizada con una propuesta adaptada a tu marca, sin costo y sin compromiso.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span>¿Quién está detrás de LAB 080?</span>
+          <span class="faq-arrow">↘</span>
+        </div>
+        <div class="faq-a">Un director creativo senior con 15 años en marcas globales (Concha y Toro, Casillero del Diablo, Jumbo) que también construye software. Detrás de LAB 080 hay criterio de marca grande y capacidad técnica en una sola persona.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="cta-eyebrow" data-es="// Proyecto nuevo" data-en="// New Project">// Proyecto nuevo</div>
+  <h2 class="cta-headline" data-scramble>
+    <span data-es="¿Un proyecto<br>en mente?<br>Hablemos." data-en="Have a project<br>in mind?<br>Let's talk.">¿Un proyecto<br>en mente?<br>Hablemos.</span>
+  </h2>
+  <p class="cta-sub" data-es="Sin briefs de 20 páginas. Sin reuniones de diagnóstico que podrían ser un correo. Cuéntanos qué necesitas y te enviamos una propuesta en 24 horas." data-en="No 20-page briefs. No diagnostic meetings that could be an email. Tell us what you need and we'll send a proposal within 24 hours.">Sin briefs de 20 páginas. Sin reuniones de diagnóstico que podrían ser un correo. Cuéntanos qué necesitas y te enviamos una propuesta en 24 horas.</p>
+  <form class="cta-form" onsubmit="return false">
+    <input type="text" class="cta-input" placeholder="tu nombre" style="border-right:1px solid rgba(0,0,0,.15);max-width:160px" required>
+    <input type="email" class="cta-input" placeholder="tu email" required>
+    <button type="submit" class="cta-btn" data-es="Enviar" data-en="Send">Enviar</button>
+  </form>
+  <p style="font-size:11px;color:rgba(0,0,0,.4);margin-top:12px;position:relative;z-index:2" data-es="Sin spam. Solo te contactaremos para responder tu consulta." data-en="No spam. We'll only reach out to answer your request.">Sin spam. Solo te contactaremos para responder tu consulta.</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-card">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="footer-brand-name">LAB 080</span>
+        <p class="footer-desc" data-es="Un laboratorio donde lo visual y lo técnico trabajan juntos. Studio & Systems, un solo equipo." data-en="A lab where visual and technical work together. Studio & Systems, one team.">Un laboratorio donde lo visual y lo técnico trabajan juntos. Studio & Systems, un solo equipo.</p>
+        <div class="footer-social">
+          <a href="https://instagram.com/lab080.studio" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          <a href="https://linkedin.com/company/lab080" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Studio</div>
+        <a href="#services" data-es="Servicios" data-en="Services">Servicios</a>
+        <a href="#brands" data-es="Marcas" data-en="Brands">Marcas</a>
+        <a href="#offline" data-es="Metodología" data-en="Methodology">Metodología</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Systems</div>
+        <a href="#services" data-es="Automatizaciones" data-en="Automations">Automatizaciones</a>
+        <a href="#services" data-es="Desarrollo Web" data-en="Web Dev">Desarrollo Web</a>
+        <a href="#services" data-es="Apps" data-en="Apps">Apps</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Contacto</div>
+        <a href="mailto:hola@lab080.studio">hola@lab080.studio</a>
+        <a href="#cta" data-es="Enviar propuesta" data-en="Send proposal">Enviar propuesta</a>
+        <a href="#" data-es="FAQ" data-en="FAQ">FAQ</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-bottom-text">© 2026 LAB 080 Studio · Santiago, Chile</span>
+    <span class="footer-bottom-text" style="display:flex;gap:12px">
+      <a href="#" style="color:var(--muted);text-decoration:none" data-es="Privacidad" data-en="Privacy">Privacidad</a>
+      <a href="#" style="color:var(--muted);text-decoration:none">IG</a>
+    </span>
+  </div>
+</footer>
+
+<script>
+// Nav scroll
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 60) {
+    nav.style.background = 'rgba(13,13,13,.95)';
+    nav.style.backdropFilter = 'blur(16px)';
+    nav.style.borderBottom = '1px solid #1E1E1E';
+  } else {
+    nav.style.background = 'transparent';
+    nav.style.backdropFilter = 'none';
+    nav.style.borderBottom = 'none';
+  }
+  nav.style.transition = 'all .3s';
+});
+
+// Reveal on scroll
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); }
+  });
+}, { threshold: 0.06 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+// Brand toggle
+function toggleBrand(row, id) {
+  const detail = document.getElementById('bd-' + id);
+  const isOpen = detail.classList.contains('open');
+  document.querySelectorAll('.brand-detail.open').forEach(d => d.classList.remove('open'));
+  document.querySelectorAll('.brand-row.active').forEach(r => r.classList.remove('active'));
+  if (!isOpen) { detail.classList.add('open'); row.classList.add('active'); }
+}
+
+// Service accordion
+function toggleSvc(row) {
+  const item = row.parentElement;
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.svc-item.open').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+// FAQ toggle
+function toggleFaq(q) {
+  const item = q.parentElement;
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+</script>
+
+<script>
+(function(){
+  'use strict';
+  var container = document.getElementById('waves-bg');
+  if(!container) return;
+
+  var svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;display:block';
+  container.appendChild(svg);
+
+  var dot = document.createElement('div');
+  dot.style.cssText = 'position:absolute;top:0;left:0;width:0.5rem;height:0.5rem;background:#d52c28;border-radius:50%;transform:translate3d(calc(var(--x) - 50%),calc(var(--y) - 50%),0);will-change:transform;pointer-events:none';
+  container.appendChild(dot);
+
+  var simplex = new SimplexNoise();
+  var strokeColor = '#d52c28';
+  var mouse = { x:-10, y:0, lx:0, ly:0, sx:0, sy:0, v:0, vs:0, a:0, set:false };
+  var paths = [], lines = [];
+  var bounding = null, rafId = null;
+
+  function setSize(){
+    bounding = container.getBoundingClientRect();
+    svg.style.width = bounding.width + 'px';
+    svg.style.height = bounding.height + 'px';
+  }
+
+  function setLines(){
+    var w = bounding.width, h = bounding.height;
+    lines = [];
+    paths.forEach(function(p){ p.remove(); });
+    paths = [];
+    var xGap = 8, yGap = 8;
+    var oW = w + 200, oH = h + 30;
+    var tL = Math.ceil(oW / xGap), tP = Math.ceil(oH / yGap);
+    var xS = (w - xGap * tL) / 2, yS = (h - yGap * tP) / 2;
+
+    for(var i=0;i<tL;i++){
+      var pts = [];
+      for(var j=0;j<tP;j++){
+        pts.push({
+          x: xS + xGap * i,
+          y: yS + yGap * j,
+          wave: { x:0, y:0 },
+          cursor: { x:0, y:0, vx:0, vy:0 }
+        });
+      }
+      var path = document.createElementNS('http://www.w3.org/2000/svg','path');
+      path.setAttribute('fill','none');
+      path.setAttribute('stroke', strokeColor);
+      path.setAttribute('stroke-width','1');
+      svg.appendChild(path);
+      paths.push(path);
+      lines.push(pts);
+    }
+  }
+
+  function updateMouse(x,y){
+    if(!bounding) return;
+    mouse.x = x - bounding.left;
+    mouse.y = y - bounding.top + window.scrollY;
+    if(!mouse.set){
+      mouse.sx = mouse.x; mouse.sy = mouse.y;
+      mouse.lx = mouse.x; mouse.ly = mouse.y;
+      mouse.set = true;
+    }
+    container.style.setProperty('--x', mouse.sx + 'px');
+    container.style.setProperty('--y', mouse.sy + 'px');
+  }
+
+  function movePoints(time){
+    for(var li=0;li<lines.length;li++){
+      var pts = lines[li];
+      for(var pi=0;pi<pts.length;pi++){
+        var p = pts[pi];
+        var move = simplex.noise2D(
+          (p.x + time * 0.008) * 0.003,
+          (p.y + time * 0.003) * 0.002
+        ) * 8;
+        p.wave.x = Math.cos(move) * 12;
+        p.wave.y = Math.sin(move) * 6;
+
+        var dx = p.x - mouse.sx, dy = p.y - mouse.sy;
+        var d = Math.hypot(dx, dy);
+        var l = Math.max(175, mouse.vs);
+
+        if(d < l){
+          var s = 1 - d / l;
+          var f = Math.cos(d * 0.001) * s;
+          p.cursor.vx += Math.cos(mouse.a) * f * l * mouse.vs * 0.00035;
+          p.cursor.vy += Math.sin(mouse.a) * f * l * mouse.vs * 0.00035;
+        }
+        p.cursor.vx += (0 - p.cursor.x) * 0.01;
+        p.cursor.vy += (0 - p.cursor.y) * 0.01;
+        p.cursor.vx *= 0.95;
+        p.cursor.vy *= 0.95;
+        p.cursor.x += p.cursor.vx;
+        p.cursor.y += p.cursor.vy;
+        p.cursor.x = Math.min(50, Math.max(-50, p.cursor.x));
+        p.cursor.y = Math.min(50, Math.max(-50, p.cursor.y));
+      }
+    }
+  }
+
+  function moved(pt, withCursor){
+    return {
+      x: pt.x + pt.wave.x + (withCursor !== false ? pt.cursor.x : 0),
+      y: pt.y + pt.wave.y + (withCursor !== false ? pt.cursor.y : 0)
+    };
+  }
+
+  function drawLines(){
+    for(var li=0;li<lines.length;li++){
+      var pts = lines[li];
+      if(pts.length < 2 || !paths[li]) continue;
+      var first = moved(pts[0], false);
+      var d = 'M ' + first.x + ' ' + first.y;
+      for(var pi=1;pi<pts.length;pi++){
+        var cur = moved(pts[pi]);
+        d += 'L ' + cur.x + ' ' + cur.y;
+      }
+      paths[li].setAttribute('d', d);
+    }
+  }
+
+  function tick(time){
+    mouse.sx += (mouse.x - mouse.sx) * 0.1;
+    mouse.sy += (mouse.y - mouse.sy) * 0.1;
+
+    var dx = mouse.x - mouse.lx, dy = mouse.y - mouse.ly;
+    var d = Math.hypot(dx, dy);
+    mouse.v = d;
+    mouse.vs += (d - mouse.vs) * 0.1;
+    mouse.vs = Math.min(100, mouse.vs);
+    mouse.lx = mouse.x; mouse.ly = mouse.y;
+    mouse.a = Math.atan2(dy, dx);
+
+    container.style.setProperty('--x', mouse.sx + 'px');
+    container.style.setProperty('--y', mouse.sy + 'px');
+
+    movePoints(time);
+    drawLines();
+    rafId = requestAnimationFrame(tick);
+  }
+
+  setSize();
+  setLines();
+
+  window.addEventListener('resize', function(){
+    if(rafId) cancelAnimationFrame(rafId);
+    setSize();
+    setLines();
+    rafId = requestAnimationFrame(tick);
+  });
+
+  document.addEventListener('mousemove', function(e){
+    updateMouse(e.pageX, e.pageY);
+  });
+
+  document.addEventListener('touchmove', function(e){
+    var t = e.touches[0];
+    updateMouse(t.clientX, t.clientY);
+  }, { passive: false });
+
+  rafId = requestAnimationFrame(tick);
+})();
+</script>
+
+<script>
+// EN/ES Language Toggle
+(function(){
+  var lang = localStorage.getItem('lab080-lang') || 'es';
+  var toggle = document.querySelector('.lang-toggle');
+  if(!toggle) return;
+
+  function setLang(l){
+    lang = l;
+    document.documentElement.lang = l;
+    localStorage.setItem('lab080-lang', l);
+    toggle.textContent = l === 'es' ? 'ES / EN' : 'EN / ES';
+    document.querySelectorAll('[data-es],[data-en]').forEach(function(el){
+      var txt = el.getAttribute('data-' + l);
+      if(txt) el.innerHTML = txt;
+    });
+  }
+
+  toggle.addEventListener('click', function(){
+    setLang(lang === 'es' ? 'en' : 'es');
+  });
+
+  setLang(lang);
+})();
+</script>
+<script>
+// Text Scramble — section titles
+(function(){
+  'use strict';
+  var defaultChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+  function scramble(el, opts){
+    var originalHTML = el.innerHTML;
+    var text = originalHTML.replace(/<br\s*\/?>/gi, ' ');
+    var duration = opts.duration || 700;
+    var speed = opts.speed || 35;
+    var chars = opts.chars || defaultChars;
+    var steps = Math.max(1, Math.floor(duration / speed));
+    var step = 0;
+
+    var interval = setInterval(function(){
+      var progress = step / steps;
+      var revealCount = Math.floor(progress * text.length);
+      var result = '';
+      for(var i=0;i<text.length;i++){
+        if(text[i] === ' ' || text[i] === '\n'){
+          result += ' ';
+        } else if(i < revealCount){
+          result += text[i];
+        } else {
+          result += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+      }
+      el.textContent = result;
+      step++;
+      if(step >= steps){
+        clearInterval(interval);
+        el.innerHTML = originalHTML;
+      }
+    }, speed);
+  }
+
+  var els = document.querySelectorAll('[data-scramble]');
+  if(els.length === 0) return;
+
+  // Hero headline — trigger on load
+  var hero = document.querySelector('.hero-headline');
+  if(hero) setTimeout(function(){ scramble(hero, { duration: 600 }); }, 400);
+
+  // Observer for scroll-triggered titles
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        var el = e.target;
+        var delay = el.classList.contains('reveal') ? 500 : 100;
+        setTimeout(function(){ scramble(el, { duration: 700 }); }, delay);
+        obs.unobserve(el);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  els.forEach(function(el){
+    if(el !== hero) obs.observe(el);
+  });
+})();
+</script>
+</body>
+</html>
